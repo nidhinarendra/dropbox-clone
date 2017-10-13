@@ -34,12 +34,15 @@ exports.fetchData = function(callback, sqlQuery) {
 };
 exports.insertData = function(callback, sqlQuery) {
   console.log('\nSQL Query::' + sqlQuery);
-  console.log(sqlQuery.firstname + ' ' + sqlQuery.lastname);
+  console.log(
+    sqlQuery.firstname + ' ' + sqlQuery.lastname + ' ' + sqlQuery.emailid
+  );
   pool.getConnection(function(err, connection) {
     if (err) {
       console.log('ERROR: ' + err.message);
     } else {
       // Use the connection
+      console.log('Inserting into db');
       var userdetails = connection.query(
         'INSERT INTO users SET ?',
         sqlQuery,

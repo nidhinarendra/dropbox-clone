@@ -6,11 +6,19 @@ var express = require('express'),
   routes = require('./routes'),
   user = require('./routes/user'),
   http = require('http'),
-  path = require('path');
+  path = require('path'),
+  session = require('client-sessions');
 var login = require('./routes/login');
 
 var app = express();
-
+app.use(
+  session({
+    cookieName: 'session',
+    secret: 'pooja',
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000
+  })
+);
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
@@ -32,6 +40,7 @@ if ('development' == app.get('env')) {
 // });
 //app.get('/users', user.list);
 app.post('/api/users/register', login.register);
+app.post('/api/users/authenticate', login.checkLogin);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

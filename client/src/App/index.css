@@ -11,6 +11,12 @@ img {
 }
 
 #loginpage {
-  margin-left: 300px;
+  margin-top: 200px;
+  margin-left: 200px;
+}
+
+#homepageimage {
   margin-top: 150px;
+  width: 400px;
+  height: 400px;
 }

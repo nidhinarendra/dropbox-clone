@@ -10,14 +10,14 @@ export const userService = {
   delete: _delete
 };
 
-function login(username, password) {
+function login(email, password) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({ email, password })
   };
 
-  return fetch('/users/authenticate', requestOptions)
+  return fetch('/api/users/authenticate', requestOptions)
     .then(response => {
       if (!response.ok) {
         return Promise.reject(response.statusText);

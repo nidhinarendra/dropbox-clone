@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "start": "nodemon app.js",
-    "server": "node app.js",
+    "server": "nodemon app.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "babel": "^6.23.0",
     "babel-runtime": "^6.26.0",
+    "client-sessions": "^0.8.0",
     "concurrently": "^3.5.0",
     "crypto-js": "^3.1.9-1",
     "express": "^3.2.6",
