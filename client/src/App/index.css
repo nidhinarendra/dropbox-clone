@@ -1,0 +1,16 @@
+#left-title {
+  padding-left: 70px;
+  padding-top: 30px;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+img {
+  height: 45px;
+  width: 45px;
+}
+
+#loginpage {
+  margin-left: 300px;
+  margin-top: 150px;
+}
