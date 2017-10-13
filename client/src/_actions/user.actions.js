@@ -16,8 +16,13 @@ function login(email, password) {
     dispatch(request({ email }));
     userService.login(email, password).then(
       user => {
-        dispatch(success(user));
-        history.push('/');
+        console.log(user.statusCode);
+        if (user.statusCode == 401) {
+          dispatch(alertActions.error('error'));
+          history.push('/');
+        } else {
+          dispatch(success(user));
+        }
       },
       error => {
         dispatch(failure(error));

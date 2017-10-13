@@ -32,6 +32,7 @@ exports.fetchData = function(callback, sqlQuery) {
 
   console.log('\nConnection closed..');
 };
+
 exports.insertData = function(callback, sqlQuery) {
   console.log('\nSQL Query::' + sqlQuery);
   console.log(
