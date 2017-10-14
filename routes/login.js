@@ -35,9 +35,12 @@ exports.checkLogin = function(req, res) {
           req.session.lastname = results[0].lastname;
           req.session.id = results[0].user_id;
 
-          log.info('Login successful for the user, ' + results[0].user_id);
+          console.log('Login successful for the user, ' + results[0].userid);
           json_responses = {
-            statusCode: 200
+            statusCode: 200,
+            user: results[0].userid,
+            email: results[0].emailid,
+            fn: results[0].firstname
           };
           res.send(json_responses);
         } else {

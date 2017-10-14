@@ -1,22 +1,21 @@
-#left-title {
+/*#left-title {
   padding-left: 70px;
   padding-top: 30px;
   font-weight: bold;
   font-size: 30px;
-}
+}*/
 
 img {
   height: 45px;
   width: 45px;
 }
 
-#loginpage {
+/*#loginpage {
   margin-top: 200px;
   margin-left: 200px;
-}
+}*/
 
 #homepageimage {
-  margin-top: 150px;
   width: 400px;
   height: 400px;
 }

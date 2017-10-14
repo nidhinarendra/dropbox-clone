@@ -2,6 +2,7 @@ import { userConstants } from '../_constants';
 import { userService } from '../_services';
 import { alertActions } from './';
 import { history } from '../_helpers';
+import { browserHistory } from 'react-router';
 
 export const userActions = {
   login,
@@ -16,15 +17,17 @@ function login(email, password) {
     dispatch(request({ email }));
     userService.login(email, password).then(
       user => {
-        console.log(user.statusCode);
+        console.log('users name is: ' + user.statusCode);
         if (user.statusCode == 401) {
           dispatch(alertActions.error('error'));
-          history.push('/');
-        } else {
+        } else if (user.statusCode == 200) {
+          console.log('checked the status code');
+          history.push('/home');
           dispatch(success(user));
         }
       },
       error => {
+        console.log('I entered the error also');
         dispatch(failure(error));
         dispatch(alertActions.error(error));
       }

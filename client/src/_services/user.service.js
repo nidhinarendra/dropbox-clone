@@ -22,15 +22,16 @@ function login(email, password) {
       if (!response.ok) {
         return Promise.reject(response.statusText);
       }
-
+      console.log('response' + response);
       return response.json();
     })
     .then(user => {
+      alert(JSON.stringify(user, null, 4));
       // login successful if there's a jwt token in the response
-      if (user && user.token) {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('user', JSON.stringify(user));
-      }
+      // if (user && user.token) {
+      //   // store user details and jwt token in local storage to keep user logged in between page refreshes
+      //   localStorage.setItem('user', JSON.stringify(user));
+      // }
 
       return user;
     });
