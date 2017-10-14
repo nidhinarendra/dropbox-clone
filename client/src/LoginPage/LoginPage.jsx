@@ -43,20 +43,20 @@ class LoginPage extends React.Component {
     const { loggingIn } = this.props;
     const { email, password, submitted } = this.state;
     return (
-      <div>
+      <div className="container-fluid">
         <div id="left-title">
           <img src={image1} />
           DropBox
         </div>
         <div className="row">
-          <div className="col-md-3">
+          <div className="col-md-6 col-md-push-1">
             <img
               id="homepageimage"
               src="https://cfl.dropboxstatic.com/static/images/empty_states/rebrand_m1/sign-in-illo@2x-vflh_wJFN.png"
               data-hi-res="https://cfl.dropboxstatic.com/static/images/empty_states/rebrand_m1/sign-in-illo@2x-vflh_wJFN.png"
             />
           </div>
-          <div className="col-md-8">
+          <div className="col-md-4 col-md-pull-1">
             <h2>Login</h2>
             <form name="form" onSubmit={this.handleSubmit}>
               <div

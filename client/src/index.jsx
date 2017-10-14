@@ -1,24 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { browserHistory } from 'react-router';
 import './index.css';
 import { store } from './_helpers';
 import { App } from './App';
 import image1 from './dropbox.jpg';
 
-// setup fake backend
-// import { configureFakeBackend } from './_helpers';
-// configureFakeBackend();
-
 render(
-  <div>
-    <div className="col-md-9">
-      <div id="loginpage">
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </div>
-    </div>
-  </div>,
+  <Provider store={store} history={history}>
+    <App />
+  </Provider>,
   document.getElementById('app')
 );

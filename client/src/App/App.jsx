@@ -23,7 +23,7 @@ class App extends React.Component {
   render() {
     const { alert } = this.props;
     return (
-      <div className="col-sm-8">
+      <div>
         {alert.message && (
           <div className={`alert ${alert.type}`}>{alert.message}</div>
         )}

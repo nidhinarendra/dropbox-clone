@@ -23,19 +23,13 @@ exports.checkLogin = function(req, res) {
     } else {
       if (results.length > 0) {
         var pwd = results[0].password;
-        console.log('pwd: ' + pwd);
         var bytes = CryptoJS.AES.decrypt(pwd.toString(), 'nidhi');
-        console.log('bytes: ' + bytes);
         var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-        console.log('password is: ' + password);
-        console.log('The plain text: ' + plaintext);
         if (plaintext === password) {
           req.session.email = results[0].emailid;
           req.session.name = results[0].firstname;
           req.session.lastname = results[0].lastname;
           req.session.id = results[0].user_id;
-
-          console.log('Login successful for the user, ' + results[0].userid);
           json_responses = {
             statusCode: 200,
             user: results[0].userid,
@@ -77,8 +71,6 @@ exports.register = function(req, res) {
   };
 
   mysql.insertData(function(err, results) {
-    console.log('DB Results in users:' + JSON.stringify(results));
-    //console.log('req: ' + req.session);
     if (err) {
       throw err;
     } else {
