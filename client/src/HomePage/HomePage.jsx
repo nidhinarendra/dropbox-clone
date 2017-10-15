@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+//import * as API from './api/API';
 import '../App/index.css';
 import { userActions } from '../_actions';
 import image1 from '../dropbox.jpg';
+import TextField from 'material-ui/TextField';
+import Typography from 'material-ui/Typography';
 
 class HomePage extends React.Component {
   componentDidMount() {
@@ -17,9 +20,15 @@ class HomePage extends React.Component {
     if (folderName != null) {
       //demo should be replaced with the position where the file goes
       document.getElementById('demo').innerHTML =
-        'Hello ' + person + '! How are you today?';
+        'Hello ' + folderName + '! How are you today?';
     }
   }
+
+  customFileInput() {
+    delete field.input.value; // <-- just delete the value property
+    return <input type="file" id="file" {...field.input} />;
+  }
+
   render() {
     const { user } = this.props;
     return (
@@ -96,10 +105,15 @@ class HomePage extends React.Component {
                 <a onClick={this.newFile}>
                   <span className="glyphicon glyphicon-plus-sign" /> New Files
                 </a>
-                <input type="file" id="my_file" />
+                <input type="file" id="my_file" name="myfile" />
               </li>
               <li>
-                <a onClick={this.newFolder} href="#">
+                <a
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  data-whatever={this.newFolder}
+                  href="#"
+                >
                   <span className="glyphicon glyphicon-plus-sign" /> New Folder
                 </a>
               </li>
@@ -110,31 +124,6 @@ class HomePage extends React.Component {
                 </a>
               </li>
             </ul>
-          </div>
-        </div>
-
-        <div className="modal fade" id="myModal" role="dialog">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal">
-                  &times;
-                </button>
-                <h4 className="modal-title">Modal Header</h4>
-              </div>
-              <div className="modal-body">
-                <p>Some text in the modal.</p>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-default"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
