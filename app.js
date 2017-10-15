@@ -9,6 +9,7 @@ var express = require('express'),
   path = require('path'),
   session = require('client-sessions');
 var login = require('./routes/login');
+var files = require('./routes/files');
 
 var app = express();
 app.use(
@@ -41,6 +42,8 @@ if ('development' == app.get('env')) {
 //app.get('/users', user.list);
 app.post('/api/users/register', login.register);
 app.post('/api/users/authenticate', login.checkLogin);
+app.post('/api/uploadFile', files.uploadFile);
+app.get('/api/getFiles*', files.getFiles);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

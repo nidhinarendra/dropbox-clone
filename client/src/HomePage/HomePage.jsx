@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-//import * as API from './api/API';
 import '../App/index.css';
 import { userActions } from '../_actions';
 import image1 from '../dropbox.jpg';
@@ -9,12 +8,30 @@ import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 
 class HomePage extends React.Component {
+  handleFileUpload(event) {
+    const payload = new FormData();
+
+    payload.append('myfile', event.target.files[0]);
+
+    this.props.dispatch(userActions.uploadFile(payload));
+  }
+  constructor() {
+    super();
+    this.state = {
+      files: []
+    };
+  }
   componentDidMount() {
-    this.props.dispatch(userActions.getAll()); //fetch files and folders for one user
+    const { user } = this.props;
+    this.props.dispatch(userActions.getFiles(user));
+    // API.getFiles().then(data => {
+    //   console.log(data);
+    //   this.setState({
+    //     files: data
+    //   });
+    // });
   }
-  newFile() {
-    document.getElementById('my_file').click();
-  }
+
   newFolder() {
     var folderName = prompt('Enter a folder name', 'Folder');
     if (folderName != null) {
@@ -37,7 +54,7 @@ class HomePage extends React.Component {
           <div className="col-sm-2 sidenav">
             <h4>
               <img src={image1} />
-              Dropbox
+              Dropbox{user.fn}!!!
             </h4>
             <ul className="nav nav-pills nav-stacked">
               <li className="active">
@@ -105,15 +122,15 @@ class HomePage extends React.Component {
                 <a onClick={this.newFile}>
                   <span className="glyphicon glyphicon-plus-sign" /> New Files
                 </a>
-                <input type="file" id="my_file" name="myfile" />
+                <input
+                  type="file"
+                  id="my_file"
+                  name="myfile"
+                  onChange={this.handleFileUpload}
+                />
               </li>
               <li>
-                <a
-                  data-toggle="modal"
-                  data-target="#exampleModal"
-                  data-whatever={this.newFolder}
-                  href="#"
-                >
+                <a href="#">
                   <span className="glyphicon glyphicon-plus-sign" /> New Folder
                 </a>
               </li>

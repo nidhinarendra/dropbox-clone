@@ -8,6 +8,7 @@ export const userActions = {
   logout,
   register,
   getAll,
+  getFiles,
   delete: _delete
 };
 
@@ -47,6 +48,57 @@ function login(email, password) {
 function logout() {
   userService.logout();
   return { type: userConstants.LOGOUT };
+}
+
+function uploadFile(payload) {
+  return dispatch => {
+    dispatch(request(payload));
+
+    userService.uploadFile(payload).then(
+      payload => {
+        dispath(success());
+        dispatch(alertActions.success('File uploaded'));
+      },
+      error => {
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+  function request(user) {
+    return { type: userConstants.REGISTER_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.REGISTER_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.REGISTER_FAILURE, error };
+  }
+}
+
+function getFiles(user) {
+  return dispatch => {
+    dispatch(request(user));
+    userService.getFiles(user).then(
+      user => {
+        console.log('inside getfiles actions response' + user);
+        dispatch(success());
+      },
+      error => {
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+  function request(user) {
+    return { type: userConstants.REGISTER_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.REGISTER_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.REGISTER_FAILURE, error };
+  }
 }
 
 function register(user) {

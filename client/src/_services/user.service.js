@@ -7,8 +7,32 @@ export const userService = {
   getAll,
   getById,
   update,
+  getFiles,
   delete: _delete
 };
+
+function getFiles(user) {
+  return fetch('/api/getFiles/' + user.id).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response inside getfiles services' + response.statusText);
+    return response.json();
+  });
+}
+function uploadFile(payload) {
+  const requestOptions = {
+    method: 'POST',
+    body: payload
+  };
+  return fetch('/api/uploadFile', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.json();
+  });
+}
 
 function login(email, password) {
   const requestOptions = {
