@@ -22,6 +22,7 @@ class App extends React.Component {
 
   render() {
     const { alert } = this.props;
+
     return (
       <div>
         {alert.message && (
@@ -32,6 +33,7 @@ class App extends React.Component {
             <PrivateRoute exact path="/" component={HomePage} />
             <Route path="/register" component={RegisterPage} />
             <Route path="/login" component={LoginPage} />
+
             <Route path="/home" component={HomePage} />
           </div>
         </Router>

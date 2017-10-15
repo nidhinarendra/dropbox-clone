@@ -7,7 +7,9 @@ var SimpleNodeLogger = require('simple-node-logger'),
   },
   log = SimpleNodeLogger.createSimpleLogger(opts);
 var log = SimpleNodeLogger.createSimpleFileLogger('project.log');
+var localStorage = require('localStorage');
 
+var users = JSON.parse(localStorage.getItem('users')) || [];
 exports.checkLogin = function(req, res) {
   var emailid = req.body.email;
   var password = req.body.password;
@@ -79,8 +81,13 @@ exports.register = function(req, res) {
       req.session.lastname = insertUser.lastname;
       req.session.id = results.insertId;
       json_responses = {
+        email: insertUser.emailid,
+        firstname: insertUser.firstname,
+        lastname: insertUser.lastname,
+        id: results.insertId,
         statusCode: 200
       };
+      localStorage.setItem('users', JSON.stringify(json_responses));
       res.send(json_responses);
     }
   }, insertUser);

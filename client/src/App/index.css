@@ -19,3 +19,28 @@ img {
   height: 60%;
   margin-top: 100px;
 }
+
+.navbar-custom {
+  background-color: blue;
+  color: #ffffff;
+  border-radius: 0;
+  font-size: 100px;
+}
+
+.row.content {
+  height: 1500px;
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+  background-color: #f1f1f1;
+  height: 100%;
+}
+
+#my_file {
+  display: none;
+}
+
+h4 {
+  color: #1e90ff;
+}

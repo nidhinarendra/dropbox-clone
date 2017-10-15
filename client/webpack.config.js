@@ -1,7 +1,6 @@
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
-
 module.exports = {
   entry: './src/index.jsx',
   output: {
@@ -9,7 +8,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.css', '.jpg'],
+    extensions: ['.js', '.jsx', '.css', '.jpg', '.scss'],
     moduleExtensions: ['node_modules']
   },
   module: {
@@ -28,6 +27,11 @@ module.exports = {
         }
       },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
+      {
+        test: /\.scss$/,
+        loader: 'style!css!sass'
+      },
+
       {
         test: /\.(jpg|png|svg)$/,
         loader: 'url-loader',

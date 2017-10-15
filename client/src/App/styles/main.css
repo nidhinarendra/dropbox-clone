@@ -1,0 +1,25 @@
+.appContainer {
+	height: 100%;
+}
+
+.appHeader {
+	width: 100%;
+	padding: 16px;
+	display: table;
+	background-color: #2593e6;
+
+	&Title {
+		font-size: 22px;
+		display: table-cell;
+		color: #fff;
+	}
+}
+
+
+.footer {
+	margin-top: 20px;
+
+	a {
+		padding: 5px 10px 5px 0;
+	}
+}
