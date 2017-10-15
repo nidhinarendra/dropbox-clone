@@ -23,7 +23,7 @@ function login(email, password) {
         } else if (user.statusCode == 200) {
           console.log('checked the status code');
           dispatch(success(user));
-          history.push('/');
+          history.push('/home');
         }
       },
       error => {

@@ -31,12 +31,13 @@ exports.checkLogin = function(req, res) {
           req.session.email = results[0].emailid;
           req.session.name = results[0].firstname;
           req.session.lastname = results[0].lastname;
-          req.session.id = results[0].user_id;
+          req.session.id = results[0].userid;
           json_responses = {
             statusCode: 200,
-            user: results[0].userid,
+            id: results[0].userid,
             email: results[0].emailid,
-            fn: results[0].firstname
+            fn: results[0].firstname,
+            ln: results[0].lastname
           };
           res.send(json_responses);
         } else {
@@ -87,7 +88,6 @@ exports.register = function(req, res) {
         id: results.insertId,
         statusCode: 200
       };
-      localStorage.setItem('users', JSON.stringify(json_responses));
       res.send(json_responses);
     }
   }, insertUser);

@@ -7,9 +7,8 @@ import image1 from '../dropbox.jpg';
 
 class HomePage extends React.Component {
   componentDidMount() {
-    this.props.dispatch(userActions.getAll());
+    this.props.dispatch(userActions.getAll()); //fetch files and folders for one user
   }
-
   newFile() {
     document.getElementById('my_file').click();
   }
@@ -22,6 +21,7 @@ class HomePage extends React.Component {
     }
   }
   render() {
+    const { user } = this.props;
     return (
       <div className="container-fluid">
         <div className="row content">

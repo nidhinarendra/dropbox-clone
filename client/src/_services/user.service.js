@@ -26,8 +26,8 @@ function login(email, password) {
       return response.json();
     })
     .then(user => {
-      //  alert(JSON.stringify(user, null, 4));
-      if (user && user.token) {
+      alert(JSON.stringify(user, null, 4));
+      if (user && user.id) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
       }
