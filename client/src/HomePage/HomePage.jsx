@@ -9,6 +9,7 @@ import Typography from 'material-ui/Typography';
 
 class HomePage extends React.Component {
   handleFileUpload(event) {
+    var newFile = document.getElementById('my_file').click();
     const payload = new FormData();
 
     payload.append('myfile', event.target.files[0]);
@@ -21,6 +22,7 @@ class HomePage extends React.Component {
       files: []
     };
   }
+
   componentDidMount() {
     const { user } = this.props;
     this.props.dispatch(userActions.getFiles(user));
@@ -54,7 +56,7 @@ class HomePage extends React.Component {
           <div className="col-sm-2 sidenav">
             <h4>
               <img src={image1} />
-              Dropbox{user.fn}!!!
+              Dropbox
             </h4>
             <ul className="nav nav-pills nav-stacked">
               <li className="active">
@@ -119,15 +121,11 @@ class HomePage extends React.Component {
                 </a>
               </li>
               <li>
-                <a onClick={this.newFile}>
+                <a type="file" name="myfile" onClick={this.handleFileUpload}>
                   <span className="glyphicon glyphicon-plus-sign" /> New Files
+                  <input type="file" id="my_file" name="myfile" />
                 </a>
-                <input
-                  type="file"
-                  id="my_file"
-                  name="myfile"
-                  onChange={this.handleFileUpload}
-                />
+                <input type="file" id="my_file" name="myfile" />
               </li>
               <li>
                 <a href="#">
