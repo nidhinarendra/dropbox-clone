@@ -3,7 +3,7 @@ var pool = mysql.createPool({
   connectionLimit: 10,
   host: 'localhost',
   user: 'root',
-  password: 'root123',
+  password: '',
   database: 'dropbox',
   port: 3306
 });

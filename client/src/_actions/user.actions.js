@@ -9,6 +9,7 @@ export const userActions = {
   register,
   getAll,
   getFiles,
+  uploadFile,
   delete: _delete
 };
 
@@ -56,7 +57,7 @@ function uploadFile(payload) {
 
     userService.uploadFile(payload).then(
       payload => {
-        dispath(success());
+        dispatch(success());
         dispatch(alertActions.success('File uploaded'));
       },
       error => {
@@ -66,13 +67,13 @@ function uploadFile(payload) {
     );
   };
   function request(user) {
-    return { type: userConstants.REGISTER_REQUEST, user };
+    return { type: userConstants.UPLOAD_FILE_REQUEST, user };
   }
   function success(user) {
-    return { type: userConstants.REGISTER_SUCCESS, user };
+    return { type: userConstants.UPLOAD_FILE_SUCCESS, user };
   }
   function failure(error) {
-    return { type: userConstants.REGISTER_FAILURE, error };
+    return { type: userConstants.UPLOAD_FILE_FAILURE, error };
   }
 }
 

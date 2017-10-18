@@ -8,6 +8,7 @@ export const userService = {
   getById,
   update,
   getFiles,
+  uploadFile,
   delete: _delete
 };
 
@@ -30,7 +31,7 @@ function uploadFile(payload) {
       return Promise.reject(response.statusText);
     }
     console.log('response' + response);
-    return response.json();
+    return response;
   });
 }
 
