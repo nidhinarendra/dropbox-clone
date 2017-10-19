@@ -1,8 +1,17 @@
+body {
+  font-family: 'Arial';
+}
+
 #left-title {
   padding-left: 70px;
   padding-top: 30px;
   font-weight: bold;
   font-size: 30px;
+}
+
+.dropbox-image {
+  margin-top: 50px;
+  margin-left: 30px;
 }
 
 img {
@@ -12,6 +21,9 @@ img {
 
 .col-md-4 {
   margin-top: 150px;
+}
+.nav-bar-left-contents {
+  font-size: 18px;
 }
 
 #homepageimage {

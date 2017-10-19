@@ -1,4 +1,7 @@
 var mysql = require('./mysql');
+var express = require('express');
+var router = express.Router();
+var multer = require('multer');
 
 exports.uploadFile = function(req, res) {
   console.log(req.body);

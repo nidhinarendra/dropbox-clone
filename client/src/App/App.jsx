@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './index.css';
@@ -21,6 +22,7 @@ class App extends React.Component {
     });
   }
 
+
   render() {
     const { alert } = this.props;
 
@@ -31,6 +33,7 @@ class App extends React.Component {
         )}
         <Router history={history}>
           <div>
+            <PrivateRoute exact path="/" component={HomePage} />
             <PrivateRoute exact path="/home" component={HomePage} />
             <Route path="/register" component={RegisterPage} />
             <Route path="/login" component={LoginPage} />

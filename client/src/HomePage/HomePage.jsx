@@ -34,6 +34,7 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
+    console.log("homepage entered");
     const { user } = this.props;
     this.setState({
       userid: user.id
@@ -67,20 +68,28 @@ class HomePage extends React.Component {
     return (
       <div className="container-fluid">
         <div className="row content">
+
           <div className="col-sm-2 sidenav">
-            <h4>
-              <img src={image1} />
-              Dropbox
-            </h4>
+            <p className="dropbox-image">
+              <img src="https://cfl.dropboxstatic.com/static/images/index/rebrand/logos/glyphs/glyph_blue.svg" width="32px" height="32px"  />
+            </p>
             <ul className="nav nav-pills nav-stacked">
-              <li className="active">
-                <a href="#section1">Home</a>
+              <li className="nav-bar-left-contents ">
+                <a href="#home">Home</a>
               </li>
-              <li>
-                <a href="#section2">Files</a>
+              <li className="nav-bar-left-contents">
+                <a href="#files">Files</a>
               </li>
             </ul>
           </div>
+
+          <div className="page-header">
+          <div className="page-header-title">
+          <h4 className="page-header-heading"> HOME </h4>
+          </div>
+          </div>
+
+
           <div className="col-sm-8">
             <h3>HOME</h3>
             <br />
