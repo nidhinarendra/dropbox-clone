@@ -19,17 +19,14 @@ img {
   width: 45px;
 }
 
-.col-md-4 {
-  margin-top: 150px;
-}
-.nav-bar-left-contents {
-  font-size: 18px;
-}
-
 #homepageimage {
   width: 60%;
   height: 60%;
   margin-top: 100px;
+}
+
+.nav-bar-left-contents {
+  font-size: 18px;
 }
 
 .navbar-custom {

@@ -65,9 +65,12 @@ class RegisterPage extends React.Component {
           </div>
           <div className="col-md-4 col-md-pull-1">
             <h2>Create an account</h2>
-            <p> or <Link to="/login" className="btn btn-link">
-              Log in
-            </Link>
+            <p>
+              {' '}
+              or{' '}
+              <Link to="/login" className="btn btn-link">
+                Log in
+              </Link>
             </p>
             <form name="form" onSubmit={this.handleSubmit}>
               <div
@@ -76,10 +79,10 @@ class RegisterPage extends React.Component {
                   (submitted && !user.firstName ? ' has-error' : '')
                 }
               >
-                <label htmlFor="firstName">First Name</label>
                 <input
                   type="text"
                   className="form-control"
+                  placeholder="First Name"
                   name="firstName"
                   value={user.firstName}
                   onChange={this.handleChange}
@@ -95,10 +98,10 @@ class RegisterPage extends React.Component {
                   (submitted && !user.lastName ? ' has-error' : '')
                 }
               >
-                <label htmlFor="lastName">Last Name</label>
                 <input
                   type="text"
                   className="form-control"
+                  placeholder="Last name"
                   name="lastName"
                   value={user.lastName}
                   onChange={this.handleChange}
@@ -113,10 +116,10 @@ class RegisterPage extends React.Component {
                   'form-group' + (submitted && !user.email ? ' has-error' : '')
                 }
               >
-                <label htmlFor=" email">Email</label>
                 <input
                   type="text"
                   className="form-control"
+                  placeholder="Email"
                   name="email"
                   value={user.email}
                   onChange={this.handleChange}
@@ -132,9 +135,9 @@ class RegisterPage extends React.Component {
                   (submitted && !user.password ? ' has-error' : '')
                 }
               >
-                <label htmlFor="password">Password</label>
                 <input
                   type="password"
+                  placeholder="password"
                   className="form-control"
                   name="password"
                   value={user.password}
@@ -146,7 +149,9 @@ class RegisterPage extends React.Component {
                   )}
               </div>
               <div className="form-group">
-                <button className="btn btn-primary pull-right">Create an account</button>
+                <button className="btn btn-primary pull-right">
+                  Create an account
+                </button>
                 {registering && (
                   <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 )}

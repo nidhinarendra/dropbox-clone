@@ -15,7 +15,7 @@ class HomePage extends React.Component {
     const payload = new FormData();
 
     payload.append('myfile', event.target.files[0]);
-
+    alert(JSON.stringify(payload, null, 4));
     //payload.append('userid', userid);
     console.log('the payload type is: ' + typeof payload);
     for (var pair of payload.entries()) {
@@ -34,7 +34,7 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    console.log("homepage entered");
+    console.log('homepage entered');
     const { user } = this.props;
     this.setState({
       userid: user.id
@@ -68,13 +68,16 @@ class HomePage extends React.Component {
     return (
       <div className="container-fluid">
         <div className="row content">
-
           <div className="col-sm-2 sidenav">
             <p className="dropbox-image">
-              <img src="https://cfl.dropboxstatic.com/static/images/index/rebrand/logos/glyphs/glyph_blue.svg" width="32px" height="32px"  />
+              <img
+                src="https://cfl.dropboxstatic.com/static/images/index/rebrand/logos/glyphs/glyph_blue.svg"
+                width="32px"
+                height="32px"
+              />
             </p>
             <ul className="nav nav-pills nav-stacked">
-              <li className="nav-bar-left-contents ">
+              <li className="nav-bar-left-contents">
                 <a href="#home">Home</a>
               </li>
               <li className="nav-bar-left-contents">
@@ -83,16 +86,27 @@ class HomePage extends React.Component {
             </ul>
           </div>
 
-          <div className="page-header">
-          <div className="page-header-title">
-          <h4 className="page-header-heading"> HOME </h4>
-          </div>
+          <div className="col-sm-10 page-header">
+            <div className="row">
+              <div className="col-xs-2">
+                <div className="page-header-title">
+                  <h4 className="page-header-heading"> HOME </h4>
+                </div>
+              </div>
+              <div className="col-xs-2 col-md-2 col-md-push-6 search-bar">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="search"
+                />
+              </div>
+              <div className="col-xs-2 pull-right">
+                <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" />
+              </div>
+            </div>
           </div>
 
-
-          <div className="col-sm-8">
-            <h3>HOME</h3>
-            <br />
+          <div className="col-sm-7">
             <div>
               <h4>Starred</h4>
               <table className="table table-striped">
@@ -150,19 +164,22 @@ class HomePage extends React.Component {
               </table>
             </div>
           </div>
-          <div className="col-sm-2 sidenav">
-            <ul className="nav navbar-nav navbar-left">
+
+          <div className="col-sm-3 sidenav">
+            <ul className="nav navbar-nav navbar-right">
               <li>
                 <a href="profile" onClick={this.personalInfo}>
                   <span className="glyphicon glyphicon-user" /> Account
                 </a>
               </li>
               <li>
-                <label
-                  className="btn btn-bs-file btn-primary"
-                  onChange={this.handleFileUpload}
-                >
-                  <input type="file" encType='multipart/form-data' name="myfile" />
+                <label className="btn btn-bs-file btn-primary">
+                  <input
+                    type="file"
+                    encType="multipart/form-data"
+                    onChange={this.handleFileUpload}
+                    name="myfile"
+                  />
                   New Files
                 </label>
               </li>
