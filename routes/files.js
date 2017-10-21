@@ -14,32 +14,15 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('myfile');
 
-exports.uploadFinal = function(req, res) {
-  upload(req, res, function(err) {
-    if (err) {
-    }
-  });
-  res.send('File upload sucessfully.');
-};
-
-// var storage = multer.diskStorage({
-//   destination: function(req, file, cb) {
-//     cb(null, './routes/uploads');
-//   },
-//   filename: function(req, file, cb) {
-//     cb(null, file.fieldName + '-' + Date.now());
-//   }
-// });
-//
-// //var upload = multer({ storage: storage });
-// var upload = multer({ storage });
-
 exports.uploadFile = function(req, res) {
-  multer({ dest: 'public/uploads/' }).single('myfile');
-  // upload.single('myfile');
-  console.log(req.files.myfile.path);
-  console.log(req.body);
-  res.send('got the file');
+  upload(req, res, function(req, res, err) {
+    if (err) {
+      console.log('Upload unsuccessful');
+    }
+    console.log(req.file.filename);
+  });
+
+  res.send('File upload sucessfully.');
 };
 
 exports.getFiles = function(req, res) {

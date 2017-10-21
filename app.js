@@ -15,18 +15,6 @@ var files = require('./routes/files');
 var multer = require('multer');
 var bodyParser = require('body-parser');
 
-/*
-// var upload = multer({ dest: './uploads' })
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './routes/uploads');
-  },
-  filename: function(req, file, cb) {
-    cb(null, 'sdlds');
-  }
-});
-*/
-
 var app = express();
 
 app.use(
@@ -62,21 +50,10 @@ if ('development' == app.get('env')) {
 
 app.post('/api/users/register', login.register);
 app.post('/api/users/authenticate', login.checkLogin);
-// app.post('/api/uploadFile', files.uploadFile);
 app.get('/api/getFiles*', files.getFiles);
-app.post('/api/upload', files.uploadFinal);
+app.post('/api/uploadFile', files.uploadFile);
 
 /* version 1 */
-app.post(
-  '/api/uploadFile',
-  multer({ dest: 'uploads/' }).single('myfile'),
-  (req, res, next) => {
-    console.log('the Object.keys(req.files)  :' + Object.keys(req.files));
-    console.log('This is req.files:');
-    console.log(req.files.task);
-    res.status(204).end();
-  }
-);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
