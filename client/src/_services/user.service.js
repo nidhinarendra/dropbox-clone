@@ -12,15 +12,18 @@ export const userService = {
   delete: _delete
 };
 
-function getFiles(user) {
-  return fetch('/api/getFiles/' + user.id).then(response => {
+function getFiles(userid) {
+  console.log('in services getting files');
+  return fetch('/api/getFiles/' + userid).then(response => {
     if (!response.ok) {
+      console.log('the response is not ok in error');
       return Promise.reject(response.statusText);
     }
-    console.log('response inside getfiles services' + response.statusText);
-    return response.json();
+    console.log('response inside getfiles services', response);
+    return response;
   });
 }
+
 function uploadFile(payload) {
   const requestOptions = {
     method: 'POST',
@@ -31,7 +34,7 @@ function uploadFile(payload) {
       return Promise.reject(response.statusText);
     }
     console.log('response' + response);
-    return response;
+    return response.status;
   });
 }
 

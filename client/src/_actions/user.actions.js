@@ -56,9 +56,10 @@ function uploadFile(payload) {
     dispatch(request(payload));
 
     userService.uploadFile(payload).then(
-      payload => {
+      response => {
         dispatch(success());
         dispatch(alertActions.success('File uploaded'));
+        return response;
       },
       error => {
         dispatch(failure(error));

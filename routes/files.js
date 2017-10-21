@@ -32,24 +32,36 @@ exports.uploadFile = function(req, res) {
     mysql.insertFile(function(err, result) {
       if (err) {
         throw err;
-      } else {
-        // res.send('file uploaded');
       }
     }, insertFile);
+
     if (err) {
       console.log('Upload unsuccessful');
-    } else {
-      // res.send('File upload sucessfully.');
     }
   });
-  res.send('File upload sucessfully.');
+  jsonResponses = {
+    statusText: 'File uploaded successfully',
+    statusCode: 204
+  };
+  res.status(204).end();
 };
 
 exports.getFiles = function(req, res) {
   console.log(req.params);
-  testJson = {
-    statusCode: 200,
-    response: 'searching for files'
-  };
-  res.send(testJson);
+  var userid = req.params[0].split('/');
+  console.log(userid[1]);
+  mysql.getFile(function(err, result) {
+    if (err) {
+      throw err;
+    } else {
+      var resultFiles = [];
+      for (var i = 0; i < result.length; i += 1) {
+        console.log(result[i].filename);
+        resultFiles.push(result[i].filename);
+      }
+      console.log('the result file is');
+      console.log(resultFiles);
+      res.send('abc');
+    }
+  }, userid[1]);
 };

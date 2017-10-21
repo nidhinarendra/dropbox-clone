@@ -2,12 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '../App/index.css';
-import { userActions } from '../_actions';
+import { userActions, alertActions } from '../_actions';
+import { userService } from '../_services';
 import image1 from '../dropbox.jpg';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 
-class HomePage extends React.Component {
+class HomePage extends Component {
   handleFileUpload(event) {
     const { dispatch } = this.props;
     const { userid } = this.state;
@@ -16,13 +17,19 @@ class HomePage extends React.Component {
 
     payload.append('myfile', event.target.files[0]);
     payload.append('user', userid);
-    alert(JSON.stringify(payload, null, 4));
-    //payload.append('userid', userid);
-    console.log('the payload type is: ' + typeof payload);
-    for (var pair of payload.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
-    this.props.dispatch(userActions.uploadFile(payload));
+
+    userService.uploadFile(payload).then(status => {
+      if (status === 204) {
+        dispatch(alertActions.success('File uploaded'));
+        setTimeout(function() {
+          dispatch(alertActions.clear());
+        }, 3000);
+        console.log('file upload success');
+        userService.getFiles(userid).then(status => {
+          console.log('get file request successful');
+        });
+      }
+    });
   }
 
   constructor() {
@@ -37,11 +44,17 @@ class HomePage extends React.Component {
   componentDidMount() {
     console.log('homepage entered');
     const { user } = this.props;
+    console.log(user);
     this.setState({
       userid: user.id
     });
-    console.log('this props is: ' + this.props.user.id);
-    this.props.dispatch(userActions.getFiles(user));
+    console.log(user.id);
+    userService.getFiles(user.id).then(data => {
+      console.log(data);
+      this.setState({
+        files: data
+      });
+    });
     // API.getFiles().then(data => {
     //   console.log(data);
     //   this.setState({
@@ -138,26 +151,13 @@ class HomePage extends React.Component {
               </table>
             </div>
             <div>
-              <h4>Added Files</h4>
+              <h4>Recently Added Files</h4>
               <table className="table table-striped">
                 <tbody>
                   <tr>
                     <td>
-                      <span className="glyphicon glyphicon-file" />sample_file.txt
-                      <span className="glyphicon glyphicon-star-empty pull-right" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
                       <span className="glyphicon glyphicon-file" />
-                      Assignment2.txt{' '}
-                      <span className="glyphicon glyphicon-star-empty pull-right" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="glyphicon glyphicon-folder-close" />
-                      travel_itenary{' '}
+                      {this.state.files}
                       <span className="glyphicon glyphicon-star-empty pull-right" />
                     </td>
                   </tr>
@@ -166,7 +166,7 @@ class HomePage extends React.Component {
             </div>
           </div>
 
-          <div className="col-sm-3 sidenav">
+          <div className="col-sm-3">
             <ul className="nav navbar-nav navbar-right">
               <li>
                 <a href="profile" onClick={this.personalInfo}>

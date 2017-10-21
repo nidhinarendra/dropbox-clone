@@ -33,6 +33,34 @@ exports.fetchData = function(callback, sqlQuery) {
   console.log('\nConnection closed..');
 };
 
+exports.getFile = function(callback, userid) {
+  console.log('\nSQL Query::' + userid);
+
+  pool.getConnection(function(err, connection) {
+    if (err) {
+      console.log('ERROR: ' + err.message);
+    } else {
+      // Use the connection
+      console.log('Getting files from db');
+      var userdetails = connection.query(
+        'SELECT filename FROM files WHERE userid = ?',
+        userid,
+        function(err, rows, fields) {
+          if (err) {
+            console.log('ERROR: ' + err.message);
+          } else {
+            // return err or result
+            console.log('DB Results in Mysql: ' + JSON.stringify(rows));
+            callback(err, rows);
+          }
+          connection.release();
+        }
+      );
+    }
+  });
+  console.log('\nConnection closed..');
+};
+
 exports.insertFile = function(callback, sqlQuery) {
   console.log('\nSQL Query::' + sqlQuery);
 
