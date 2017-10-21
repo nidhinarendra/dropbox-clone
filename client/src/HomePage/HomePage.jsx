@@ -15,6 +15,7 @@ class HomePage extends React.Component {
     const payload = new FormData();
 
     payload.append('myfile', event.target.files[0]);
+    payload.append('user', userid);
     alert(JSON.stringify(payload, null, 4));
     //payload.append('userid', userid);
     console.log('the payload type is: ' + typeof payload);

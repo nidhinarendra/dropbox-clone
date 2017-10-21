@@ -12,16 +12,36 @@ var storage = multer.diskStorage({
   }
 });
 
+//if bigger size, add a limit
 var upload = multer({ storage: storage }).single('myfile');
 
 exports.uploadFile = function(req, res) {
-  upload(req, res, function(req, res, err) {
+  upload(req, res, function(err) {
+    console.log(req.file.originalname);
+    console.log(req.body.user);
+    var userid = req.body.user;
+    var filepath = req.file.path;
+    var filename = req.file.originalname;
+
+    var insertFile = {
+      userid,
+      filepath,
+      filename
+    };
+
+    mysql.insertFile(function(err, result) {
+      if (err) {
+        throw err;
+      } else {
+        // res.send('file uploaded');
+      }
+    }, insertFile);
     if (err) {
       console.log('Upload unsuccessful');
+    } else {
+      // res.send('File upload sucessfully.');
     }
-    console.log(req.file.filename);
   });
-
   res.send('File upload sucessfully.');
 };
 
