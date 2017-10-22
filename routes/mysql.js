@@ -42,7 +42,7 @@ exports.getFile = function(callback, userid) {
     } else {
       // Use the connection
       console.log('Getting files from db');
-      var userdetails = connection.query(
+      var fileDetails = connection.query(
         'SELECT filename FROM files WHERE userid = ?',
         userid,
         function(err, rows, fields) {

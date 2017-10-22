@@ -12,16 +12,38 @@ export const userService = {
   delete: _delete
 };
 
+/*
 function getFiles(userid) {
   console.log('in services getting files');
-  return fetch('/api/getFiles/' + userid).then(response => {
+  fetch('/api/getFiles/' + userid).then(response => {
+    // console.log(response.json());
     if (!response.ok) {
       console.log('the response is not ok in error');
       return Promise.reject(response.statusText);
+    } else {
+      var temp = response.json();
+      console.log('the keys in temp is', Object.keys(temp), response);
+
+      return temp;
     }
-    console.log('response inside getfiles services', response);
-    return response;
   });
+}
+*/
+
+function getFiles(userid) {
+  console.log('in services getting files');
+  fetch('/api/getFiles/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        console.log('the keys in temp is', Object.keys(data));
+      })
+  );
 }
 
 function uploadFile(payload) {

@@ -48,8 +48,10 @@ class HomePage extends Component {
     this.setState({
       userid: user.id
     });
+
     console.log(user.id);
     userService.getFiles(user.id).then(data => {
+      console.log('data coming from the server');
       console.log(data);
       this.setState({
         files: data
