@@ -32,7 +32,7 @@ function getFiles(userid) {
 
 function getFiles(userid) {
   console.log('in services getting files');
-  fetch('/api/getFiles/' + userid).then(response =>
+  return fetch('/api/getFiles/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -41,7 +41,7 @@ function getFiles(userid) {
       }))
       .then(res => {
         console.log(res.status, res.data);
-        console.log('the keys in temp is', Object.keys(data));
+        return res.data;
       })
   );
 }

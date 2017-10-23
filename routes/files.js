@@ -57,10 +57,9 @@ exports.getFiles = function(req, res) {
       var resultFiles = [];
       for (var i = 0; i < result.length; i += 1) {
         console.log(result[i].filename);
-        resultFiles.push(result[i].filename);
+        resultFiles.push(result[i]);
       }
       console.log('the result file is', resultFiles);
-      //res.send({ nidhiResObj: resultFiles });
       res.send(resultFiles);
     }
   }, userid[1]);

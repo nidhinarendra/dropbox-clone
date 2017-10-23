@@ -23,10 +23,14 @@ class HomePage extends Component {
         dispatch(alertActions.success('File uploaded'));
         setTimeout(function() {
           dispatch(alertActions.clear());
-        }, 3000);
+        }, 2000);
         console.log('file upload success');
-        userService.getFiles(userid).then(status => {
-          console.log('get file request successful');
+        userService.getFiles(userid).then(response => {
+          console.log('data coming from the server', response);
+          this.setState({
+            userid: user.id,
+            files: response
+          });
         });
       }
     });
@@ -41,28 +45,18 @@ class HomePage extends Component {
     this.handleFileUpload = this.handleFileUpload.bind(this);
   }
 
-  componentDidMount() {
-    console.log('homepage entered');
-    const { user } = this.props;
-    console.log(user);
-    this.setState({
-      userid: user.id
-    });
+  shouldComponentUpdate() {
+    return true;
+  }
 
-    console.log(user.id);
-    userService.getFiles(user.id).then(data => {
-      console.log('data coming from the server');
-      console.log(data);
+  componentDidMount() {
+    const { user } = this.props;
+    userService.getFiles(user.id).then(response => {
       this.setState({
-        files: data
+        userid: user.id,
+        files: response
       });
     });
-    // API.getFiles().then(data => {
-    //   console.log(data);
-    //   this.setState({
-    //     files: data
-    //   });
-    // });
   }
 
   newFolder() {
@@ -129,24 +123,23 @@ class HomePage extends Component {
                 <tbody>
                   <tr>
                     <td>
-                      <span className="glyphicon glyphicon-file" />
-                      flight_tickets.pdf
-                      <span className="glyphicon glyphicon-star pull-right" />
+                      <span className="glyphicon glyphicon-file" />{' '}
+                      flight_tickets.pdf{' '}
+                      <span className="glyphicon glyphicon-star" />
                     </td>
                   </tr>
                   <tr>
                     <td>
                       {' '}
                       <span className="glyphicon glyphicon-file" />{' '}
-                      exam_dates_timings.docx
-                      <span className="glyphicon glyphicon-star pull-right" />
+                      exam_dates_timings.docx{' '}
+                      <span className="glyphicon glyphicon-star" />
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span className="glyphicon glyphicon-folder-close" />{' '}
-                      Subjects
-                      <span className="glyphicon glyphicon-star pull-right" />
+                      Subjects <span className="glyphicon glyphicon-star" />
                     </td>
                   </tr>
                 </tbody>
@@ -156,13 +149,17 @@ class HomePage extends Component {
               <h4>Recently Added Files</h4>
               <table className="table table-striped">
                 <tbody>
-                  <tr>
-                    <td>
-                      <span className="glyphicon glyphicon-file" />
-                      {this.state.files}
-                      <span className="glyphicon glyphicon-star-empty pull-right" />
-                    </td>
-                  </tr>
+                  {this.state.files.map(function(listValues, i) {
+                    return (
+                      <tr key={i}>
+                        <td>
+                          <span className="glyphicon glyphicon-folder-close" />{' '}
+                          {listValues.filename} {'   '}
+                          <span className="glyphicon glyphicon-star-empty" />
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -206,11 +203,12 @@ class HomePage extends Component {
 }
 
 function mapStateToProps(state) {
-  const { users, authentication } = state;
+  const { users, authentication, files } = state;
   const { user } = authentication;
   return {
     user,
-    users
+    users,
+    files
   };
 }
 
