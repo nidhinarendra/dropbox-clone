@@ -2,21 +2,29 @@
  * Module dependencies.
  */
 
-var express = require('express'),
-  routes = require('./routes'),
-  user = require('./routes/user'),
-  http = require('http'),
-  path = require('path'),
-  os = require('os'),
-  fs = require('fs'),
-  session = require('client-sessions');
-var login = require('./routes/login');
-var files = require('./routes/files');
+var express = require('express');
+var http = require('http');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var passport = require('passport');
+var cors = require('cors');
+var path = require('path');
+var os = require('os');
+var fs = require('fs');
+var session = require('client-sessions');
 var multer = require('multer');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var methodOverride = require('method-override');
+//require('./routes/passport')(passport);
+const keys = require('./config/keys');
+
+var routes = require('./routes');
+var user = require('./routes/user');
+var login = require('./routes/login');
+var mongo = require('./routes/mongo');
+var files = require('./routes/files');
 
 var app = express();
 app.use(cookieParser());
@@ -33,10 +41,8 @@ app.use(cookieSession({ secret: 'app_1' }));
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-//app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
-// app.use(express.bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride('X-HTTP-Method-Override'));
@@ -53,12 +59,14 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.post('/api/users/register', login.register);
-app.post('/api/users/authenticate', login.checkLogin);
-app.get('/api/getFiles*', files.getFiles);
-app.post('/api/uploadFile', files.uploadFile);
+//api for mysql
+// app.post('/api/users/register', login.register);
+// app.post('/api/users/authenticate', login.checkLogin);
+// app.get('/api/getFiles*', files.getFiles);
+// app.post('/api/uploadFile', files.uploadFile);
 
-/* version 1 */
+//api for mongodb
+app.post('/api/users/register', mongo.register);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
