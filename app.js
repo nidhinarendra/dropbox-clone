@@ -17,7 +17,10 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var methodOverride = require('method-override');
-//require('./routes/passport')(passport);
+var expressSessions = require('express-session');
+var mongoStore = require('connect-mongo')(expressSessions);
+
+require('./routes/passport')(passport);
 const keys = require('./config/keys');
 
 var routes = require('./routes');
@@ -29,7 +32,25 @@ var files = require('./routes/files');
 var app = express();
 app.use(cookieParser());
 
-app.use(cookieSession({ secret: 'app_1' }));
+app.use(
+  expressSessions({
+    secret: keys.sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 6 * 1000,
+    store: new mongoStore({
+      url: keys.mongoURI
+    })
+  })
+);
+app.use(passport.initialize());
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+// app.use(cookieSession({ secret: 'app_1' }));
 // app.use(
 //   session({
 //     cookieName: 'session',
@@ -67,6 +88,7 @@ if ('development' == app.get('env')) {
 
 //api for mongodb
 app.post('/api/users/register', mongo.register);
+app.post('/api/users/authenticate', mongo.authenticate);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

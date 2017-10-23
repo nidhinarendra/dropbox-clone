@@ -27,3 +27,13 @@ exports.register = function(req, res, next) {
     res.json(user);
   });
 };
+
+exports.authenticate = function(req, res, next) {
+  console.log(req.body);
+  User.find(function(err, user) {
+    if (err) {
+      return next(err);
+    }
+    res.json(user);
+  });
+};
