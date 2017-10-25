@@ -1,39 +1,28 @@
-const mongoose = require('mongoose');
-const keys = require('../config/keys');
-mongoose.connect(keys.mongoURI, function(err, result) {
-  if (err) {
-    console.log('error');
-  } else {
-    console.log('Successfully connected to db');
-  }
-});
+var MongoClient = require('mongodb').MongoClient;
+var db;
+var connected = false;
 
-var UserSchema = new mongoose.Schema({
-  firstname: String,
-  lastname: String,
-  email: String,
-  password: String
-});
-
-var User = mongoose.model('User', UserSchema);
-
-exports.register = function(req, res, next) {
-  console.log(req.body.firstname);
-  var user = new User(req.body);
-  user.save(function(err, user) {
+/**
+ * Connects to the MongoDB Database with the provided URL
+ */
+exports.connect = function(url, callback) {
+  MongoClient.connect(url, function(err, _db) {
     if (err) {
-      return next(err);
+      throw new Error('Could not connect: ' + err);
     }
-    res.json(user);
+    db = _db;
+    connected = true;
+    console.log(connected + ' is connected?');
+    callback(db);
   });
 };
 
-exports.authenticate = function(req, res, next) {
-  console.log(req.body);
-  User.find(function(err, user) {
-    if (err) {
-      return next(err);
-    }
-    res.json(user);
-  });
+/**
+ * Returns the collection on the selected database
+ */
+exports.collection = function(name) {
+  if (!connected) {
+    throw new Error('Must connect to Mongo before calling "collection"');
+  }
+  return db.collection(name);
 };

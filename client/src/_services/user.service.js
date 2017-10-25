@@ -11,6 +11,9 @@ export const userService = {
   uploadFile,
   delete: _delete
 };
+const headers = {
+  Accept: 'application/json'
+};
 
 /*
 function getFiles(userid) {
@@ -63,7 +66,11 @@ function uploadFile(payload) {
 function login(email, password) {
   const requestOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
     body: JSON.stringify({ email, password })
   };
 
@@ -76,7 +83,6 @@ function login(email, password) {
       return response.json();
     })
     .then(user => {
-      alert(JSON.stringify(user, null, 4));
       if (user && user.id) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
@@ -86,8 +92,17 @@ function login(email, password) {
 }
 
 function logout() {
+  return fetch('/api/users/logout', {
+    method: 'POST',
+    headers: {
+      ...headers
+    },
+    credentials: 'include'
+  }).then(res => {
+    localStorage.removeItem('user');
+    return res.status;
+  });
   // remove user from local storage to log user out
-  localStorage.removeItem('user');
 }
 
 function getAll() {

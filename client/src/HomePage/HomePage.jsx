@@ -43,10 +43,12 @@ class HomePage extends Component {
       files: []
     };
     this.handleFileUpload = this.handleFileUpload.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
-
-  shouldComponentUpdate() {
-    return true;
+  handleLogout() {
+    console.log('logout called');
+    const { dispatch } = this.props;
+    dispatch(userActions.logout());
   }
 
   componentDidMount() {
@@ -110,7 +112,16 @@ class HomePage extends Component {
                   placeholder="search"
                 />
               </div>
-              <div className="col-xs-2 pull-right">
+              <div className="col-xs-2 col-md-2 search-bar">
+                <button
+                  className="btn btn-danger"
+                  type="button"
+                  onClick={this.handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+              <div className="col-xs-2 col-md-push-4">
                 <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" />
               </div>
             </div>

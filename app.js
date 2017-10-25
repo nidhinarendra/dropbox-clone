@@ -26,11 +26,19 @@ const keys = require('./config/keys');
 var routes = require('./routes');
 var user = require('./routes/user');
 var login = require('./routes/login');
-var mongo = require('./routes/mongo');
+var userRegister = require('./routes/userRegisterMongo');
 var files = require('./routes/files');
+var authentication = require('./routes/authentication');
 
 var app = express();
 app.use(cookieParser());
+
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
 
 app.use(
   expressSessions({
@@ -44,12 +52,8 @@ app.use(
     })
   })
 );
+
 app.use(passport.initialize());
-var corsOptions = {
-  origin: 'http://localhost:3000',
-  credentials: true,
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
 // app.use(cookieSession({ secret: 'app_1' }));
 // app.use(
 //   session({
@@ -87,8 +91,37 @@ if ('development' == app.get('env')) {
 // app.post('/api/uploadFile', files.uploadFile);
 
 //api for mongodb
-app.post('/api/users/register', mongo.register);
-app.post('/api/users/authenticate', mongo.authenticate);
+app.post('/api/users/register', userRegister.register);
+// app.post('/api/users/authenticate', authentication.authenticate);
+
+app.post('/api/users/authenticate', function(req, res) {
+  console.log(req.body);
+  passport.authenticate('login', function(err, user) {
+    if (err) {
+      res.status(500).send();
+    }
+
+    if (!user) {
+      res.status(401).send();
+    }
+    req.session.user = user.email;
+    console.log(req.session.user);
+    console.log('session initilized');
+    var user = {
+      username: 'test',
+      id: 123,
+      statusCode: 200
+    };
+    return res.status(201).send(user);
+  })(req, res);
+});
+
+app.post('/api/users/logout', function(req, res) {
+  console.log(req.session.user);
+  req.session.destroy();
+  console.log('Session Destroyed');
+  res.status(200).send();
+});
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

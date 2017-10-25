@@ -47,7 +47,11 @@ function login(email, password) {
 }
 
 function logout() {
-  userService.logout();
+  userService.logout().then(res => {
+    if (res == 200) {
+      history.push('/login');
+    }
+  });
   return { type: userConstants.LOGOUT };
 }
 
