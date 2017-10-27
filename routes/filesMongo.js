@@ -1,4 +1,5 @@
-var mysql = require('./mysql');
+var mongo = require('./mongo');
+const keys = require('../config/keys');
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
@@ -12,7 +13,6 @@ var storage = multer.diskStorage({
   }
 });
 
-//if bigger size, add a limit
 var upload = multer({ storage: storage }).single('myfile');
 
 exports.uploadFile = function(req, res) {
@@ -42,22 +42,4 @@ exports.uploadFile = function(req, res) {
     statusCode: 204
   };
   res.status(204).end();
-};
-
-exports.getFiles = function(req, res) {
-  console.log(req.params);
-  var userid = req.params[0].split('/');
-  console.log(userid[1]);
-  mysql.getFile(function(err, result) {
-    if (err) {
-      throw err;
-    } else {
-      var resultFiles = [];
-      for (var i = 0; i < result.length; i += 1) {
-        resultFiles.push(result[i]);
-      }
-      res.send(resultFiles);
-    }
-  }, userid[1]);
-  //
 };

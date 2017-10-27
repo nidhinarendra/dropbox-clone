@@ -10,6 +10,8 @@ import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
+import { FilePage } from '../FilePage';
+import { PersonalData } from '../PersonalData';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,7 +24,6 @@ class App extends React.Component {
     });
   }
 
-
   render() {
     const { alert } = this.props;
 
@@ -33,8 +34,10 @@ class App extends React.Component {
         )}
         <Router history={history}>
           <div>
-            <PrivateRoute exact path="/" component={HomePage} />
+            <PrivateRoute exact path="/" component={LoginPage} />
             <PrivateRoute exact path="/home" component={HomePage} />
+            <PrivateRoute exact path="/files" component={FilePage} />
+            <PrivateRoute exact path="/account" component={PersonalData} />
             <Route path="/register" component={RegisterPage} />
             <Route path="/login" component={LoginPage} />
           </div>

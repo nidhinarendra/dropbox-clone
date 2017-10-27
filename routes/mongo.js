@@ -12,7 +12,6 @@ exports.connect = function(url, callback) {
     }
     db = _db;
     connected = true;
-    console.log(connected + ' is connected?');
     callback(db);
   });
 };

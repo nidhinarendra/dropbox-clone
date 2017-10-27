@@ -10,9 +10,14 @@ exports.authenticate = function(req, res) {
     if (!user) {
       res.status(401).send();
     }
-    req.session.user = user.username;
-    console.log(req.session.user);
-    console.log('session initilized');
-    return res.status(201).send({ username: 'test' });
+    req.session.user = user.email;
+    var user = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      statusCode: 200
+    };
+    console.log('in the server user', user);
+    return res.status(201).send(user);
   })(req, res);
 };

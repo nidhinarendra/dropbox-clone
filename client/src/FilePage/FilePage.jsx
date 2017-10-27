@@ -8,14 +8,8 @@ import image1 from '../dropbox.jpg';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 import { history } from '../_helpers';
-import {
-  Dropdown,
-  DropdownMenu,
-  DropdownToggle,
-  DropdownItem
-} from 'reactstrap';
 
-class HomePage extends Component {
+class FilePage extends Component {
   handleFileUpload(event) {
     const { dispatch } = this.props;
     const { userid } = this.state;
@@ -45,30 +39,16 @@ class HomePage extends Component {
   constructor() {
     super();
     this.state = {
-      dropdownOpen: false,
       userid: 0,
       files: []
     };
     this.handleFileUpload = this.handleFileUpload.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-    this.toggle = this.toggle.bind(this);
   }
-
-  toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
-  }
-
   handleLogout() {
-    event.preventDefault();
     console.log('logout called');
     const { dispatch } = this.props;
-    dispatch(
-      userActions.logout().then(res => {
-        window.location.reload();
-      })
-    );
+    dispatch(userActions.logout());
   }
 
   handleHome() {
@@ -77,10 +57,6 @@ class HomePage extends Component {
 
   handleFiles() {
     history.push('/files');
-  }
-
-  handleDropdown() {
-    document.getElementById('myDropdown').classList.toggle('show');
   }
 
   componentDidMount() {
@@ -111,8 +87,6 @@ class HomePage extends Component {
 
   render() {
     const { user } = this.props;
-    console.log(user);
-    const options = ['one', 'two', 'three'];
     return (
       <div className="container-fluid">
         <div className="row content">
@@ -129,7 +103,7 @@ class HomePage extends Component {
                 <a onClick={this.handleHome}>Home</a>
               </li>
               <li className="nav-bar-left-contents">
-                <a onClick={this.handleFiles}>Files</a>
+                <a onClick={this.handleHome}>Files</a>
               </li>
             </ul>
           </div>
@@ -148,101 +122,28 @@ class HomePage extends Component {
                   placeholder="search"
                 />
               </div>
-
-              <div className="col-xs-2 col-md-push-6">
-                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                  <DropdownToggle
-                    tag="span"
-                    onClick={this.toggle}
-                    data-toggle="dropdown"
-                    aria-expanded={this.state.dropdownOpen}
-                  >
-                    <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" />
-                  </DropdownToggle>
-                  <DropdownMenu right className="dropdownmenu">
-                    <br />
-                    <DropdownItem header>
-                      <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" />
-                      <br /> <br />
-                      <div className="username">
-                        {user.firstName} {user.lastName}
-                      </div>
-                    </DropdownItem>
-
-                    <div onClick={this.personalInfo}>Personal</div>
-
-                    <br />
-                    <div onClick={this.toggle}>Custom dropdown item</div>
-                    <div>
-                      <hr />
-                    </div>
-                    <div className="col-xs-2 col-md-2">
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={this.handleLogout}
-                      >
-                        Sign out
-                      </button>
-                    </div>
-                    <div onClick={this.toggle}>Custom dropdown item</div>
-                  </DropdownMenu>
-                </Dropdown>
+              <div className="col-xs-2 col-md-2 search-bar">
+                <button
+                  className="btn btn-danger"
+                  type="button"
+                  onClick={this.handleLogout}
+                >
+                  Logout
+                </button>
               </div>
-            </div>
-          </div>
-
-          <div className="col-sm-7">
-            <div>
-              <h4>Starred</h4>
-              <table className="table table-striped">
-                <tbody>
-                  <tr>
-                    <td>
-                      <span className="glyphicon glyphicon-file" />{' '}
-                      flight_tickets.pdf{' '}
-                      <span className="glyphicon glyphicon-star" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      {' '}
-                      <span className="glyphicon glyphicon-file" />{' '}
-                      exam_dates_timings.docx{' '}
-                      <span className="glyphicon glyphicon-star" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="glyphicon glyphicon-folder-close" />{' '}
-                      Subjects <span className="glyphicon glyphicon-star" />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div>
-              <h4>Recently Added Files</h4>
-              <table className="table table-striped">
-                <tbody>
-                  {this.state.files.map(function(listValues, i) {
-                    return (
-                      <tr key={i}>
-                        <td>
-                          <span className="glyphicon glyphicon-folder-close" />{' '}
-                          {listValues.filename} {'   '}
-                          <span className="glyphicon glyphicon-star-empty" />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <div className="col-xs-2 col-md-push-4">
+                <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" />
+              </div>
             </div>
           </div>
 
           <div className="col-sm-3">
             <ul className="nav navbar-nav navbar-right">
+              <li>
+                <a href="profile" onClick={this.personalInfo}>
+                  <span className="glyphicon glyphicon-user" /> Account
+                </a>
+              </li>
               <li>
                 <label className="btn btn-bs-file btn-primary">
                   <input
@@ -251,8 +152,13 @@ class HomePage extends Component {
                     onChange={this.handleFileUpload}
                     name="myfile"
                   />
-                  Upload Files
+                  New Files
                 </label>
+              </li>
+              <li>
+                <a onClick={this.newFolder} href="#">
+                  <span className="glyphicon glyphicon-plus-sign" /> New Folder
+                </a>
               </li>
               <li>
                 <a onClick={this.newFolder} href="#">
@@ -278,5 +184,5 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedHomePage = connect(mapStateToProps)(HomePage);
-export { connectedHomePage as HomePage };
+const connectedFilePage = connect(mapStateToProps)(FilePage);
+export { connectedFilePage as FilePage };

@@ -53,11 +53,28 @@ img {
 h4 {
   color: #1e90ff;
 }
-
+.glyphicon-plus-sign {
+  margin-left: 35px;
+}
 .btn-bs-file {
-  /*position: relative;*/
+  width: 240px;
+  height: 40px;
+  font-size: 15px;
+  margin-top: 50px;
 }
 .btn-bs-file input[type='file'] {
   opacity: 0;
   cursor: inherit;
+  height: 5px;
+  width: 5px;
+}
+
+.dropdownmenu {
+  width: 200px;
+  height: 300px;
+}
+
+.username {
+  font-size: 18px;
+  color: #303030;
 }

@@ -15,24 +15,6 @@ const headers = {
   Accept: 'application/json'
 };
 
-/*
-function getFiles(userid) {
-  console.log('in services getting files');
-  fetch('/api/getFiles/' + userid).then(response => {
-    // console.log(response.json());
-    if (!response.ok) {
-      console.log('the response is not ok in error');
-      return Promise.reject(response.statusText);
-    } else {
-      var temp = response.json();
-      console.log('the keys in temp is', Object.keys(temp), response);
-
-      return temp;
-    }
-  });
-}
-*/
-
 function getFiles(userid) {
   console.log('in services getting files');
   return fetch('/api/getFiles/' + userid).then(response =>
@@ -134,9 +116,7 @@ function register(user) {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
-
     return response.json();
-    // console.log(response.json());
   });
 }
 

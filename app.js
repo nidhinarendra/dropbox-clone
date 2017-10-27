@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var http = require('http');
 var favicon = require('serve-favicon');
@@ -28,6 +24,7 @@ var user = require('./routes/user');
 var login = require('./routes/login');
 var userRegister = require('./routes/userRegisterMongo');
 var files = require('./routes/files');
+var filesMongo = require('./routes/filesMongo');
 var authentication = require('./routes/authentication');
 
 var app = express();
@@ -54,16 +51,7 @@ app.use(
 );
 
 app.use(passport.initialize());
-// app.use(cookieSession({ secret: 'app_1' }));
-// app.use(
-//   session({
-//     cookieName: 'session',
-//     secret: 'nidhi',
-//     duration: 30 * 60 * 1000,
-//     activeDuration: 5 * 60 * 1000
-//   })
-// );
-// all environments
+
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.use(express.favicon());
@@ -79,7 +67,7 @@ app.use(function() {
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
-// development only
+
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
@@ -92,34 +80,11 @@ if ('development' == app.get('env')) {
 
 //api for mongodb
 app.post('/api/users/register', userRegister.register);
-// app.post('/api/users/authenticate', authentication.authenticate);
-
-app.post('/api/users/authenticate', function(req, res) {
-  console.log(req.body);
-  passport.authenticate('login', function(err, user) {
-    if (err) {
-      res.status(500).send();
-    }
-
-    if (!user) {
-      res.status(401).send();
-    }
-    req.session.user = user.email;
-    console.log(req.session.user);
-    console.log('session initilized');
-    var user = {
-      username: 'test',
-      id: 123,
-      statusCode: 200
-    };
-    return res.status(201).send(user);
-  })(req, res);
-});
+app.post('/api/users/authenticate', authentication.authenticate);
+app.post('/api/uploadFile', filesMongo.uploadFile);
 
 app.post('/api/users/logout', function(req, res) {
-  console.log(req.session.user);
   req.session.destroy();
-  console.log('Session Destroyed');
   res.status(200).send();
 });
 

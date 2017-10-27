@@ -27,10 +27,7 @@ exports.register = function(req, res, next) {
       return next(err);
     }
     json_responses = {
-      email: user.emailid,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      id: user.insertId,
+      id: user._id.toString(),
       statusCode: 200
     };
     res.json(json_responses);

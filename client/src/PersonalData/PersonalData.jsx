@@ -15,33 +15,7 @@ import {
   DropdownItem
 } from 'reactstrap';
 
-class HomePage extends Component {
-  handleFileUpload(event) {
-    const { dispatch } = this.props;
-    const { userid } = this.state;
-    const payload = new FormData();
-
-    payload.append('myfile', event.target.files[0]);
-    payload.append('user', userid);
-
-    userService.uploadFile(payload).then(status => {
-      if (status === 204) {
-        dispatch(alertActions.success('File uploaded'));
-        setTimeout(function() {
-          dispatch(alertActions.clear());
-        }, 2000);
-        console.log('file upload success');
-        userService.getFiles(userid).then(response => {
-          console.log('data coming from the server', response);
-          this.setState({
-            userid: user.id,
-            files: response
-          });
-        });
-      }
-    });
-  }
-
+class PersonalData extends Component {
   constructor() {
     super();
     this.state = {
@@ -148,8 +122,16 @@ class HomePage extends Component {
                   placeholder="search"
                 />
               </div>
-
-              <div className="col-xs-2 col-md-push-6">
+              <div className="col-xs-2 col-md-2 search-bar">
+                <button
+                  className="btn btn-danger"
+                  type="button"
+                  onClick={this.handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+              <div className="col-xs-2 col-md-push-4">
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                   <DropdownToggle
                     tag="span"
@@ -175,15 +157,6 @@ class HomePage extends Component {
                     <div onClick={this.toggle}>Custom dropdown item</div>
                     <div>
                       <hr />
-                    </div>
-                    <div className="col-xs-2 col-md-2">
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={this.handleLogout}
-                      >
-                        Sign out
-                      </button>
                     </div>
                     <div onClick={this.toggle}>Custom dropdown item</div>
                   </DropdownMenu>
@@ -278,5 +251,5 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedHomePage = connect(mapStateToProps)(HomePage);
-export { connectedHomePage as HomePage };
+const connectedPersonalData = connect(mapStateToProps)(PersonalData);
+export { connectedPersonalData as PersonalData };
