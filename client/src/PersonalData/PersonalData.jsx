@@ -20,11 +20,8 @@ class PersonalData extends Component {
     super();
     this.state = {
       dropdownOpen: false,
-      userid: 0,
-      files: []
+      userid: 0
     };
-    this.handleFileUpload = this.handleFileUpload.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
     this.toggle = this.toggle.bind(this);
   }
 
@@ -32,6 +29,10 @@ class PersonalData extends Component {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
     });
+  }
+
+  handleDropdown() {
+    document.getElementById('myDropdown').classList.toggle('show');
   }
 
   handleLogout() {
@@ -49,14 +50,6 @@ class PersonalData extends Component {
     history.push('/home');
   }
 
-  handleFiles() {
-    history.push('/files');
-  }
-
-  handleDropdown() {
-    document.getElementById('myDropdown').classList.toggle('show');
-  }
-
   componentDidMount() {
     const { user } = this.props;
     this.setState({
@@ -69,24 +62,9 @@ class PersonalData extends Component {
     });
   }
 
-  newFolder() {
-    var folderName = prompt('Enter a folder name you want to share', 'Folder');
-    if (folderName != null) {
-      //demo should be replaced with the position where the file goes
-      document.getElementById('demo').innerHTML =
-        'Hello ' + folderName + '! How are you today?';
-    }
-  }
-
-  personalInfo() {
-    const { user } = this.props;
-    this.props.dispatch(userActions.getPersonalData(user));
-  }
-
   render() {
     const { user } = this.props;
-    console.log(user);
-    const options = ['one', 'two', 'three'];
+
     return (
       <div className="container-fluid">
         <div className="row content">
@@ -110,27 +88,19 @@ class PersonalData extends Component {
 
           <div className="col-sm-10 page-header">
             <div className="row">
-              <div className="col-xs-2">
+              <div className="col-xs-4">
                 <div className="page-header-title">
-                  <h4 className="page-header-heading"> HOME </h4>
+                  <h4 className="page-header-heading"> Personal Account </h4>
                 </div>
               </div>
-              <div className="col-xs-2 col-md-2 col-md-push-6 search-bar">
+              <div className="col-xs-2 col-md-2 col-md-push-4 search-bar">
                 <input
                   className="form-control"
                   type="text"
                   placeholder="search"
                 />
               </div>
-              <div className="col-xs-2 col-md-2 search-bar">
-                <button
-                  className="btn btn-danger"
-                  type="button"
-                  onClick={this.handleLogout}
-                >
-                  Logout
-                </button>
-              </div>
+
               <div className="col-xs-2 col-md-push-4">
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                   <DropdownToggle
@@ -150,13 +120,21 @@ class PersonalData extends Component {
                         {user.firstName} {user.lastName}
                       </div>
                     </DropdownItem>
-
-                    <div onClick={this.personalInfo}>Personal</div>
+                    <Link to="/account">Personal </Link>
 
                     <br />
                     <div onClick={this.toggle}>Custom dropdown item</div>
                     <div>
                       <hr />
+                    </div>
+                    <div className="col-xs-2 col-md-2">
+                      <button
+                        className="btn btn-danger"
+                        type="button"
+                        onClick={this.handleLogout}
+                      >
+                        Sign out
+                      </button>
                     </div>
                     <div onClick={this.toggle}>Custom dropdown item</div>
                   </DropdownMenu>
@@ -194,46 +172,6 @@ class PersonalData extends Component {
                 </tbody>
               </table>
             </div>
-            <div>
-              <h4>Recently Added Files</h4>
-              <table className="table table-striped">
-                <tbody>
-                  {this.state.files.map(function(listValues, i) {
-                    return (
-                      <tr key={i}>
-                        <td>
-                          <span className="glyphicon glyphicon-folder-close" />{' '}
-                          {listValues.filename} {'   '}
-                          <span className="glyphicon glyphicon-star-empty" />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="col-sm-3">
-            <ul className="nav navbar-nav navbar-right">
-              <li>
-                <label className="btn btn-bs-file btn-primary">
-                  <input
-                    type="file"
-                    encType="multipart/form-data"
-                    onChange={this.handleFileUpload}
-                    name="myfile"
-                  />
-                  Upload Files
-                </label>
-              </li>
-              <li>
-                <a onClick={this.newFolder} href="#">
-                  <span className="glyphicon glyphicon-plus-sign" /> New Shared
-                  Folder
-                </a>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

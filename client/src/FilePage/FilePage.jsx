@@ -8,6 +8,12 @@ import image1 from '../dropbox.jpg';
 import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 import { history } from '../_helpers';
+import {
+  Dropdown,
+  DropdownMenu,
+  DropdownToggle,
+  DropdownItem
+} from 'reactstrap';
 
 class FilePage extends Component {
   handleFileUpload(event) {
@@ -35,20 +41,32 @@ class FilePage extends Component {
       }
     });
   }
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
+  }
 
+  handleLogout() {
+    event.preventDefault();
+    console.log('logout called');
+    const { dispatch } = this.props;
+    dispatch(
+      userActions.logout().then(res => {
+        window.location.reload();
+      })
+    );
+  }
   constructor() {
     super();
     this.state = {
       userid: 0,
+      dropdownOpen: false,
       files: []
     };
     this.handleFileUpload = this.handleFileUpload.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-  }
-  handleLogout() {
-    console.log('logout called');
-    const { dispatch } = this.props;
-    dispatch(userActions.logout());
+    this.toggle = this.toggle.bind(this);
   }
 
   handleHome() {
@@ -57,6 +75,9 @@ class FilePage extends Component {
 
   handleFiles() {
     history.push('/files');
+  }
+  handleDropdown() {
+    document.getElementById('myDropdown').classList.toggle('show');
   }
 
   componentDidMount() {
@@ -103,7 +124,7 @@ class FilePage extends Component {
                 <a onClick={this.handleHome}>Home</a>
               </li>
               <li className="nav-bar-left-contents">
-                <a onClick={this.handleHome}>Files</a>
+                <a onClick={this.handleFiles}>Files</a>
               </li>
             </ul>
           </div>
@@ -112,7 +133,7 @@ class FilePage extends Component {
             <div className="row">
               <div className="col-xs-2">
                 <div className="page-header-title">
-                  <h4 className="page-header-heading"> HOME </h4>
+                  <h4 className="page-header-heading">FILES </h4>
                 </div>
               </div>
               <div className="col-xs-2 col-md-2 col-md-push-6 search-bar">
@@ -122,28 +143,70 @@ class FilePage extends Component {
                   placeholder="search"
                 />
               </div>
-              <div className="col-xs-2 col-md-2 search-bar">
-                <button
-                  className="btn btn-danger"
-                  type="button"
-                  onClick={this.handleLogout}
-                >
-                  Logout
-                </button>
-              </div>
-              <div className="col-xs-2 col-md-push-4">
-                <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" />
+
+              <div className="col-xs-2 col-md-push-6">
+                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                  <DropdownToggle
+                    tag="span"
+                    onClick={this.toggle}
+                    data-toggle="dropdown"
+                    aria-expanded={this.state.dropdownOpen}
+                  >
+                    <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" />
+                  </DropdownToggle>
+                  <DropdownMenu right className="dropdownmenu">
+                    <br />
+                    <DropdownItem header>
+                      <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" />
+                      <br /> <br />
+                      <div className="username">
+                        {user.firstName} {user.lastName}
+                      </div>
+                    </DropdownItem>
+                    <Link to="/account">Personal </Link>
+
+                    <br />
+                    <div onClick={this.toggle}>Custom dropdown item</div>
+                    <div>
+                      <hr />
+                    </div>
+                    <div className="col-xs-2 col-md-2">
+                      <button
+                        className="btn btn-danger"
+                        type="button"
+                        onClick={this.handleLogout}
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                    <div onClick={this.toggle}>Custom dropdown item</div>
+                  </DropdownMenu>
+                </Dropdown>
               </div>
             </div>
           </div>
 
+          <div className="col-sm-7">
+            <div>
+              <table className="table table-striped">
+                <tbody>
+                  {this.state.files.map(function(listValues, i) {
+                    return (
+                      <tr key={i}>
+                        <td>
+                          <span className="glyphicon glyphicon-folder-close" />{' '}
+                          {listValues.filename} {'   '}
+                          <span className="glyphicon glyphicon-star-empty" />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
           <div className="col-sm-3">
             <ul className="nav navbar-nav navbar-right">
-              <li>
-                <a href="profile" onClick={this.personalInfo}>
-                  <span className="glyphicon glyphicon-user" /> Account
-                </a>
-              </li>
               <li>
                 <label className="btn btn-bs-file btn-primary">
                   <input

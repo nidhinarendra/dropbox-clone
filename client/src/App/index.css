@@ -1,5 +1,5 @@
 body {
-  font-family: 'Arial';
+  font-family: verdana;
 }
 
 #left-title {
@@ -25,8 +25,9 @@ img {
   margin-top: 100px;
 }
 
-.nav-bar-left-contents {
+.nav-pills {
   font-size: 18px;
+  margin-left: 20px;
 }
 
 .navbar-custom {

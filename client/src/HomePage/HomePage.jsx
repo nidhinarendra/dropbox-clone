@@ -42,18 +42,6 @@ class HomePage extends Component {
     });
   }
 
-  constructor() {
-    super();
-    this.state = {
-      dropdownOpen: false,
-      userid: 0,
-      files: []
-    };
-    this.handleFileUpload = this.handleFileUpload.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
-    this.toggle = this.toggle.bind(this);
-  }
-
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
@@ -109,10 +97,21 @@ class HomePage extends Component {
     this.props.dispatch(userActions.getPersonalData(user));
   }
 
+  constructor() {
+    super();
+    this.state = {
+      dropdownOpen: false,
+      userid: 0,
+      files: [],
+      starred: []
+    };
+    this.handleFileUpload = this.handleFileUpload.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.toggle = this.toggle.bind(this);
+  }
+
   render() {
     const { user } = this.props;
-    console.log(user);
-    const options = ['one', 'two', 'three'];
     return (
       <div className="container-fluid">
         <div className="row content">
@@ -168,8 +167,7 @@ class HomePage extends Component {
                         {user.firstName} {user.lastName}
                       </div>
                     </DropdownItem>
-
-                    <div onClick={this.personalInfo}>Personal</div>
+                    <Link to="/account">Personal </Link>
 
                     <br />
                     <div onClick={this.toggle}>Custom dropdown item</div>
