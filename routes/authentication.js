@@ -5,9 +5,7 @@ exports.authenticate = function(req, res) {
   passport.authenticate('login', function(err, user) {
     if (err) {
       res.status(500).send();
-    }
-
-    if (!user) {
+    } else if (!user) {
       res.status(401).send();
     }
     req.session.user = user.email;

@@ -14,7 +14,8 @@ var UserSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   email: String,
-  password: String
+  password: String,
+  files: [{ filename: String, filepath: String }]
 });
 
 var User = mongoose.model('User', UserSchema);

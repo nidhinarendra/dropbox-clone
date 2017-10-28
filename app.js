@@ -82,6 +82,7 @@ if ('development' == app.get('env')) {
 app.post('/api/users/register', userRegister.register);
 app.post('/api/users/authenticate', authentication.authenticate);
 app.post('/api/uploadFile', filesMongo.uploadFile);
+app.get('/api/getFiles*', filesMongo.getFiles);
 
 app.post('/api/users/logout', function(req, res) {
   req.session.destroy();

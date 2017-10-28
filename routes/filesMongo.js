@@ -3,6 +3,7 @@ const keys = require('../config/keys');
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
+var ObjectId = require('mongodb').ObjectID;
 
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -16,6 +17,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('myfile');
 
 exports.uploadFile = function(req, res) {
+  console.log('entered uploadfile in mongo');
   upload(req, res, function(err) {
     var userid = req.body.user;
     var filepath = req.file.path;
@@ -27,11 +29,20 @@ exports.uploadFile = function(req, res) {
       filename
     };
 
-    mysql.insertFile(function(err, result) {
-      if (err) {
-        throw err;
-      }
-    }, insertFile);
+    console.log(insertFile);
+    mongo.connect(keys.mongoURI, function() {
+      console.log('mongodb connected inside inserrtfiles');
+      var coll = mongo.collection('users');
+      console.log('userid received is', userid);
+      coll.update(
+        { _id: ObjectId(userid) },
+        {
+          $push: {
+            files: { filename: filename, filepath: filepath }
+          }
+        }
+      );
+    });
 
     if (err) {
       console.log('Upload unsuccessful');
@@ -42,4 +53,26 @@ exports.uploadFile = function(req, res) {
     statusCode: 204
   };
   res.status(204).end();
+};
+
+exports.getFiles = function(req, res) {
+  console.log(req.params);
+
+  var userid = req.params[0].split('/');
+  console.log(userid[1]);
+  mongo.connect(keys.mongoURI, function() {
+    console.log('mongodb connected inside getfiles');
+    var coll = mongo.collection('users');
+    console.log('userid received is', userid[1]);
+    var getfiles = coll
+      .find({
+        _id: ObjectId(userid[1])
+      })
+      .forEach(function(user) {
+        console.log(user.files);
+        var result = user.files.map(a => a.filename);
+        console.log(result);
+        res.send(result);
+      });
+  });
 };

@@ -34,7 +34,6 @@ class FilePage extends Component {
         userService.getFiles(userid).then(response => {
           console.log('data coming from the server', response);
           this.setState({
-            userid: user.id,
             files: response
           });
         });
@@ -195,7 +194,7 @@ class FilePage extends Component {
                       <tr key={i}>
                         <td>
                           <span className="glyphicon glyphicon-folder-close" />{' '}
-                          {listValues.filename} {'   '}
+                          {listValues} {'   '}
                           <span className="glyphicon glyphicon-star-empty" />
                         </td>
                       </tr>
