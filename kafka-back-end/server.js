@@ -1,7 +1,7 @@
 var connection = new require('./kafka/Connection');
 var login = require('./services/login');
 
-var topic_name = 'login1_topic';
+var topic_name = 'login';
 var consumer = connection.getConsumer(topic_name);
 var producer = connection.getProducer();
 
