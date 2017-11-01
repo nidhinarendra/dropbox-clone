@@ -15,7 +15,7 @@ module.exports = function(passport) {
       },
       function(username, password, done) {
         kafka.make_request(
-          'login1_topic',
+          'login',
           { username: username, password: password },
           function(err, response) {
             console.log('the response in kafka make request is', response);
