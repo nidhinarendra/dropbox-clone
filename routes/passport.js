@@ -2,6 +2,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('./mongo');
 const keys = require('../config/keys');
+var kafka = require('./kafka/client');
 
 module.exports = function(passport) {
   passport.use(
@@ -13,12 +14,17 @@ module.exports = function(passport) {
         session: true
       },
       function(username, password, done) {
-        try {
-          mongo.connect(keys.mongoURI, function() {
-            var coll = mongo.collection('users');
-            var findUser = coll.findOne(
-              { email: username, password: password },
-              function(err, user) {
+        mongo.connect(keys.mongoURI, function() {
+          var coll = mongo.collection('users');
+          kafka.make_request(
+            'login_topic',
+            { username: username, password: password },
+            function(err, response) {
+              console.log('the response in mongodb is', response);
+              coll.findOne({ email: username, password: password }, function(
+                err,
+                user
+              ) {
                 if (user) {
                   console.log(user._id.toString());
                   done(null, {
@@ -31,12 +37,10 @@ module.exports = function(passport) {
                 } else {
                   done(null, false);
                 }
-              }
-            );
-          });
-        } catch (e) {
-          done(e, {});
-        }
+              });
+            }
+          );
+        });
       }
     )
   );
