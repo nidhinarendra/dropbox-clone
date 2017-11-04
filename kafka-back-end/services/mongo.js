@@ -2,7 +2,6 @@ var MongoClient = require('mongodb').MongoClient;
 var db;
 var connected = false;
 
-<<<<<<< HEAD
 /**
  * Connects to the MongoDB Database with the provided URL
  */
@@ -16,38 +15,15 @@ exports.connect = function(url, callback) {
     console.log(connected + ' is connected?');
     callback(db);
   });
-=======
-
-/**
- * Connects to the MongoDB Database with the provided URL
- */
-exports.connect = function(url, callback){
-    MongoClient.connect(url, function(err, _db){
-      if (err) { throw new Error('Could not connect: '+err); }
-      db = _db;
-      connected = true;
-      console.log(connected +" is connected?");
-      callback(db);
-    });
->>>>>>> e3bac42fb8f0feecf7d4f06a7ad617d79edc436e
 };
 
 /**
  * Returns the collection on the selected database
  */
-<<<<<<< HEAD
+
 exports.collection = function(name) {
   if (!connected) {
     throw new Error('Must connect to Mongo before calling "collection"');
   }
   return db.collection(name);
 };
-=======
-exports.collection = function(name){
-    if (!connected) {
-      throw new Error('Must connect to Mongo before calling "collection"');
-    } 
-    return db.collection(name);
-  
-};
->>>>>>> e3bac42fb8f0feecf7d4f06a7ad617d79edc436e

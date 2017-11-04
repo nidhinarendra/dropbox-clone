@@ -31,7 +31,7 @@ class HomePage extends Component {
           dispatch(alertActions.clear());
         }, 2000);
         console.log('file upload success');
-        userService.getFiles(userid).then(response => {
+        userService.getRecentFiles(userid).then(response => {
           console.log('data coming from the server', response);
           this.setState({
             userid: user.id,
@@ -76,7 +76,7 @@ class HomePage extends Component {
     this.setState({
       userid: user.id
     });
-    userService.getFiles(user.id).then(response => {
+    userService.getRecentFiles(user.id).then(response => {
       this.setState({
         files: response
       });

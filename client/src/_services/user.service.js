@@ -8,6 +8,7 @@ export const userService = {
   getById,
   update,
   getFiles,
+  getRecentFiles,
   uploadFile,
   delete: _delete
 };
@@ -18,6 +19,22 @@ const headers = {
 function getFiles(userid) {
   console.log('in services getting files');
   return fetch('/api/getFiles/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        return res.data;
+      })
+  );
+}
+
+function getRecentFiles(userid) {
+  console.log('in services getting files');
+  return fetch('/api/getRecentFiles/' + userid).then(response =>
     response
       .json()
       .then(data => ({

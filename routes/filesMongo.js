@@ -34,6 +34,10 @@ exports.uploadFile = function(req, res) {
       console.log('mongodb connected inside inserrtfiles');
       var coll = mongo.collection('users');
       console.log('userid received is', userid);
+      console.log(
+        'correlation id for file upload is',
+        '{"correlationId":"1d7b5c3abfc64ea5971d2f9bf5431e75"}'
+      );
       coll.update(
         { _id: ObjectId(userid) },
         {
@@ -73,6 +77,32 @@ exports.getFiles = function(req, res) {
         var result = user.files.map(a => a.filename);
         console.log(result);
         res.send(result);
+      });
+  });
+};
+
+exports.getRecentFiles = function(req, res) {
+  console.log(req.params);
+
+  var userid = req.params[0].split('/');
+  console.log(userid[1]);
+  mongo.connect(keys.mongoURI, function() {
+    console.log('mongodb connected inside getRecentfiles');
+    var coll = mongo.collection('users');
+    console.log('userid received is', userid[1]);
+    var getRecentfiles = coll
+      .find({
+        _id: ObjectId(userid[1])
+      })
+      .forEach(function(user) {
+        console.log(user.files);
+        console.log('length of entries in files', user.files.length);
+        var result = user.files.map(a => a.filename);
+        if (result.length < 5) {
+          res.send(result);
+        } else {
+          res.send(result.slice(0, 5));
+        }
       });
   });
 };
