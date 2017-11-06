@@ -56,14 +56,25 @@ class FilePage extends Component {
       })
     );
   }
+
+  editFolder() {
+    this.setState({
+      isEditing: !this.state.isEditing
+    });
+  }
+
   constructor() {
     super();
     this.state = {
       userid: 0,
       dropdownOpen: false,
-      files: []
+      files: [],
+      folders: [],
+      isEditing: false,
+      inputs: []
     };
     this.handleFileUpload = this.handleFileUpload.bind(this);
+    this.editFolder = this.editFolder.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.toggle = this.toggle.bind(this);
   }
@@ -75,6 +86,7 @@ class FilePage extends Component {
   handleFiles() {
     history.push('/files');
   }
+
   handleDropdown() {
     document.getElementById('myDropdown').classList.toggle('show');
   }
@@ -98,6 +110,11 @@ class FilePage extends Component {
       document.getElementById('demo').innerHTML =
         'Hello ' + folderName + '! How are you today?';
     }
+  }
+
+  appendInput() {
+    var newInput = `input-${this.state.inputs.length}`;
+    this.setState({ inputs: this.state.inputs.concat([newInput]) });
   }
 
   personalInfo() {
@@ -189,11 +206,23 @@ class FilePage extends Component {
             <div>
               <table className="table table-striped">
                 <tbody>
-                  {this.state.files.map(function(listValues, i) {
+                  {this.state.inputs.map(function(input, i) {
                     return (
                       <tr key={i}>
                         <td>
                           <span className="glyphicon glyphicon-folder-close" />{' '}
+                          <input key={input} />
+                          <span className="glyphicon glyphicon-star-empty" />
+                        </td>
+                      </tr>
+                    );
+                  })}
+
+                  {this.state.files.map(function(listValues, i) {
+                    return (
+                      <tr key={i}>
+                        <td>
+                          <span className="glyphicon glyphicon-file" />{' '}
                           {listValues} {'   '}
                           <span className="glyphicon glyphicon-star-empty" />
                         </td>
@@ -218,7 +247,7 @@ class FilePage extends Component {
                 </label>
               </li>
               <li>
-                <a onClick={this.newFolder} href="#">
+                <a onClick={() => this.appendInput()} href="#">
                   <span className="glyphicon glyphicon-plus-sign" /> New Folder
                 </a>
               </li>
