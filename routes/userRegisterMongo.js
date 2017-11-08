@@ -15,7 +15,24 @@ var UserSchema = new mongoose.Schema({
   lastName: String,
   email: String,
   password: String,
-  files: [{ filename: String, filepath: String }]
+  files: [
+    {
+      filename: String,
+      filepath: String,
+      star: Boolean,
+      sharedWith: [String],
+      sharedFrom: [String]
+    }
+  ],
+  folders: [
+    {
+      foldername: String,
+      folderpath: String,
+      star: Boolean,
+      sharedWith: [String],
+      sharedFrom: [String]
+    }
+  ]
 });
 
 var User = mongoose.model('User', UserSchema);

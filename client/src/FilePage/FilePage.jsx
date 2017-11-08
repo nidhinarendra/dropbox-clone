@@ -5,8 +5,6 @@ import '../App/index.css';
 import { userActions, alertActions } from '../_actions';
 import { userService } from '../_services';
 import image1 from '../dropbox.jpg';
-import TextField from 'material-ui/TextField';
-import Typography from 'material-ui/Typography';
 import { history } from '../_helpers';
 import {
   Dropdown,
@@ -57,12 +55,6 @@ class FilePage extends Component {
     );
   }
 
-  editFolder() {
-    this.setState({
-      isEditing: !this.state.isEditing
-    });
-  }
-
   constructor() {
     super();
     this.state = {
@@ -70,13 +62,14 @@ class FilePage extends Component {
       dropdownOpen: false,
       files: [],
       folders: [],
-      isEditing: false,
-      inputs: []
+      inputs: [],
+      folderName: ''
     };
     this.handleFileUpload = this.handleFileUpload.bind(this);
-    this.editFolder = this.editFolder.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.handleFolderChange = this.handleFolderChange.bind(this);
+    this.handleFolderSubmit = this.handleFolderSubmit.bind(this);
   }
 
   handleHome() {
@@ -101,20 +94,48 @@ class FilePage extends Component {
         files: response
       });
     });
+    userService.getFolders(user.id).then(response => {
+      this.setState({
+        folders: response
+      });
+    });
   }
 
-  newFolder() {
-    var folderName = prompt('Enter a folder name you want to share', 'Folder');
-    if (folderName != null) {
-      //demo should be replaced with the position where the file goes
-      document.getElementById('demo').innerHTML =
-        'Hello ' + folderName + '! How are you today?';
-    }
+  handleFolderChange(e) {
+    const { value } = e.target;
+    this.setState({ folderName: value });
+  }
+
+  handleFolderSubmit(e) {
+    const { dispatch } = this.props;
+    const { userid, folderName, inputs } = this.state;
+    console.log(this.state.folderName);
+    var payload = {
+      userid: userid,
+      folderName: folderName
+    };
+    console.log('payload in the handleFolderSubmit function', payload);
+
+    userService.uploadFolder(payload).then(status => {
+      if (status === 204) {
+        dispatch(alertActions.success('Folder uploaded'));
+        setTimeout(function() {
+          dispatch(alertActions.clear());
+        }, 2000);
+        console.log('folder upload success');
+        userService.getFolders(userid).then(response => {
+          console.log('data coming from the server', response);
+          this.setState({
+            folders: response,
+            inputs: []
+          });
+        });
+      }
+    });
   }
 
   appendInput() {
-    var newInput = `input-${this.state.inputs.length}`;
-    this.setState({ inputs: this.state.inputs.concat([newInput]) });
+    this.setState({ inputs: this.state.inputs.concat(['']) });
   }
 
   personalInfo() {
@@ -207,11 +228,39 @@ class FilePage extends Component {
               <table className="table table-striped">
                 <tbody>
                   {this.state.inputs.map(function(input, i) {
+                    const { folderName } = this.state;
                     return (
                       <tr key={i}>
                         <td>
                           <span className="glyphicon glyphicon-folder-close" />{' '}
-                          <input key={input} />
+                          <input
+                            value={folderName}
+                            name="folderName"
+                            type="text"
+                            onChange={this.handleFolderChange}
+                          />
+                          <button
+                            className="btn btn-primary pull-right"
+                            onClick={this.handleFolderSubmit}
+                          >
+                            {' '}
+                            Save{' '}
+                          </button>
+                        </td>
+                        <td />
+                      </tr>
+                    );
+                  }, this)}
+
+                  {this.state.folders.map(function(listValues, i) {
+                    return (
+                      <tr key={i}>
+                        <td>
+                          <span className="glyphicon glyphicon-folder-close" />{' '}
+                          <a href="#">
+                            {' '}
+                            {listValues} {'   '}{' '}
+                          </a>
                           <span className="glyphicon glyphicon-star-empty" />
                         </td>
                       </tr>
@@ -266,12 +315,13 @@ class FilePage extends Component {
 }
 
 function mapStateToProps(state) {
-  const { users, authentication, files } = state;
+  const { users, authentication, files, folders } = state;
   const { user } = authentication;
   return {
     user,
     users,
-    files
+    files,
+    folders
   };
 }
 

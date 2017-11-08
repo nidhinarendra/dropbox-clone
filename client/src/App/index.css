@@ -60,7 +60,7 @@ h4 {
 .btn-bs-file {
   width: 240px;
   height: 40px;
-  font-size: 15px;
+  font-size: 18px;
   margin-top: 50px;
 }
 .btn-bs-file input[type='file'] {
@@ -78,4 +78,10 @@ h4 {
 .username {
   font-size: 18px;
   color: #303030;
+}
+
+.glyphicon-file,
+.glyphicon-folder-close {
+  font-size: 28px;
+  color: #1e90ff;
 }

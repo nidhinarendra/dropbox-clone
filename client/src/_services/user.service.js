@@ -10,6 +10,8 @@ export const userService = {
   getFiles,
   getRecentFiles,
   uploadFile,
+  uploadFolder,
+  getFolders,
   delete: _delete
 };
 const headers = {
@@ -19,6 +21,22 @@ const headers = {
 function getFiles(userid) {
   console.log('in services getting files');
   return fetch('/api/getFiles/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        return res.data;
+      })
+  );
+}
+
+function getFolders(userid) {
+  console.log('in services getting folders');
+  return fetch('/api/getFolders/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -54,6 +72,22 @@ function uploadFile(payload) {
     body: payload
   };
   return fetch('/api/uploadFile', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
+}
+
+function uploadFolder(payload) {
+  console.log('the payload in user services for folder upload is', payload);
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+  return fetch('/api/uploadFolder', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }

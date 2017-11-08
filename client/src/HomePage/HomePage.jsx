@@ -227,7 +227,7 @@ class HomePage extends Component {
                     return (
                       <tr key={i}>
                         <td>
-                          <span className="glyphicon glyphicon-folder-close" />{' '}
+                          <span className="glyphicon glyphicon-file" />{' '}
                           {listValues} {'   '}
                           <span className="glyphicon glyphicon-star-empty" />
                         </td>

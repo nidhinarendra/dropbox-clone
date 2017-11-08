@@ -25,6 +25,7 @@ var login = require('./routes/login');
 var userRegister = require('./routes/userRegisterMongo');
 var files = require('./routes/files');
 var filesMongo = require('./routes/filesMongo');
+var foldersMongo = require('./routes/foldersMongo');
 var authentication = require('./routes/authentication');
 
 var app = express();
@@ -83,6 +84,8 @@ app.post('/api/users/register', userRegister.register);
 app.post('/api/users/authenticate', authentication.authenticate);
 app.post('/api/uploadFile', filesMongo.uploadFile);
 app.get('/api/getFiles*', filesMongo.getFiles);
+app.get('/api/getFolders*', foldersMongo.getFolders);
+app.post('/api/uploadFolder', foldersMongo.uploadFolder);
 app.get('/api/getRecentFiles*', filesMongo.getRecentFiles);
 
 app.post('/api/users/logout', function(req, res) {

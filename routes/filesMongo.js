@@ -34,10 +34,7 @@ exports.uploadFile = function(req, res) {
       console.log('mongodb connected inside inserrtfiles');
       var coll = mongo.collection('users');
       console.log('userid received is', userid);
-      console.log(
-        'correlation id for file upload is',
-        '{"correlationId":"1d7b5c3abfc64ea5971d2f9bf5431e75"}'
-      );
+
       coll.update(
         { _id: ObjectId(userid) },
         {
