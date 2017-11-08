@@ -143,6 +143,15 @@ class FilePage extends Component {
     this.props.dispatch(userActions.getPersonalData(user));
   }
 
+  delete(item) {
+    console.log('the item to delete is', item);
+    const newState = this.state.folders;
+    if (newState.indexOf(item) > -1) {
+      newState.splice(newState.indexOf(item), 1);
+      this.setState({ folders: newState });
+    }
+  }
+
   render() {
     const { user } = this.props;
     return (
@@ -261,11 +270,23 @@ class FilePage extends Component {
                             {' '}
                             {listValues} {'   '}{' '}
                           </a>
-                          <span className="glyphicon glyphicon-star-empty" />
+                          <a>
+                            <span className="glyphicon glyphicon-star-empty" />
+                          </a>
+                          <button className="btn btn-info pull-right">
+                            Share
+                          </button>
+                          <button
+                            className="btn btn-danger pull-right"
+                            onClick={this.delete.bind(this, listValues)}
+                            item={listValues}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     );
-                  })}
+                  }, this)}
 
                   {this.state.files.map(function(listValues, i) {
                     return (
@@ -274,6 +295,12 @@ class FilePage extends Component {
                           <span className="glyphicon glyphicon-file" />{' '}
                           {listValues} {'   '}
                           <span className="glyphicon glyphicon-star-empty" />
+                          <button className="btn btn-info pull-right">
+                            Share
+                          </button>
+                          <button className="btn btn-danger pull-right">
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     );
