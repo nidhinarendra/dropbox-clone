@@ -14,6 +14,7 @@ export const userService = {
   getFolders,
   deleteFolder,
   deleteFile,
+  updateStar,
   delete: _delete
 };
 const headers = {
@@ -45,6 +46,23 @@ function deleteFolder(user, item) {
   };
   console.log('in services getting files');
   return fetch('/api/deleteFolder', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
+}
+
+function updateStar(user, file, star) {
+  var payload = { userid: user, file: file, star: star };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+  console.log('in services getting files');
+  return fetch('/api/updateStar', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }

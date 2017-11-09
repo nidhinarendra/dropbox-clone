@@ -17,7 +17,6 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('myfile');
 
 exports.uploadFile = function(req, res) {
-  console.log('entered uploadfile in mongo');
   upload(req, res, function(err) {
     var userid = req.body.user;
     var filepath = req.file.path;
@@ -31,15 +30,13 @@ exports.uploadFile = function(req, res) {
 
     console.log(insertFile);
     mongo.connect(keys.mongoURI, function() {
-      console.log('mongodb connected inside inserrtfiles');
       var coll = mongo.collection('users');
-      console.log('userid received is', userid);
 
       coll.update(
         { _id: ObjectId(userid) },
         {
           $push: {
-            files: { filename: filename, filepath: filepath }
+            files: { filename: filename, filepath: filepath, star: false }
           }
         }
       );
@@ -62,16 +59,19 @@ exports.getFiles = function(req, res) {
   var userid = req.params[0].split('/');
   console.log(userid[1]);
   mongo.connect(keys.mongoURI, function() {
-    console.log('mongodb connected inside getfiles');
     var coll = mongo.collection('users');
-    console.log('userid received is', userid[1]);
     var getfiles = coll
       .find({
         _id: ObjectId(userid[1])
       })
       .forEach(function(user) {
-        console.log(user.files);
-        var result = user.files.map(a => a.filename);
+        var star = user.files.map(a => a.star);
+        var files = user.files.map(a => a.filename);
+        var result = [];
+        console.log(files.length);
+        for (var i = 0; i < files.length; i++) {
+          result[i] = { filename: files[i], star: star[i] };
+        }
         console.log(result);
         res.send(result);
       });
@@ -82,18 +82,13 @@ exports.getRecentFiles = function(req, res) {
   console.log(req.params);
 
   var userid = req.params[0].split('/');
-  console.log(userid[1]);
   mongo.connect(keys.mongoURI, function() {
-    console.log('mongodb connected inside getRecentfiles');
     var coll = mongo.collection('users');
-    console.log('userid received is', userid[1]);
     var getRecentfiles = coll
       .find({
         _id: ObjectId(userid[1])
       })
       .forEach(function(user) {
-        console.log(user.files);
-        console.log('length of entries in files', user.files.length);
         var result = user.files.map(a => a.filename);
         if (result.length < 5) {
           res.send(result);
@@ -109,12 +104,27 @@ exports.deleteFile = function(req, res) {
 
   mongo.connect(keys.mongoURI, function() {
     var coll = mongo.collection('users');
-    console.log('userid received is', req.body.userid);
     coll.update(
       { _id: ObjectId(req.body.userid) },
       {
         $pull: {
           files: { filename: req.body.item }
+        }
+      }
+    );
+  });
+};
+
+exports.updateStar = function(req, res) {
+  console.log(req.body);
+
+  mongo.connect(keys.mongoURI, function() {
+    var coll = mongo.collection('users');
+    coll.update(
+      { _id: ObjectId(req.body.userid), 'files.filename': req.body.file },
+      {
+        $set: {
+          'files.$.star': req.body.star
         }
       }
     );

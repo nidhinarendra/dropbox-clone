@@ -30,7 +30,7 @@ exports.uploadFolder = function(req, res) {
       { _id: ObjectId(userid) },
       {
         $push: {
-          folders: { foldername: foldername, folderpath: dir }
+          folders: { foldername: foldername, folderpath: dir, star: false }
         }
       }
     );

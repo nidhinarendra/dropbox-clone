@@ -176,6 +176,35 @@ class FilePage extends Component {
       });
     });
   }
+  getStar(item) {
+    console.log('starring the item', item);
+    console.log('the star status now is ', item.star);
+    const newFiles = this.state.files;
+    var index = newFiles.indexOf(item);
+    console.log(index);
+    console.log(!this.state.files[index].star);
+    newFiles[index].star = !this.state.files[index].star;
+    this.setState({
+      files: newFiles
+    });
+    console.log(
+      typeof !this.state.files[index].star,
+      this.state.files[index].star
+    );
+    const { userid, files } = this.state;
+    userService
+      .updateStar(
+        userid,
+        this.state.files[index].filename,
+        this.state.files[index].star
+      )
+      .then(response => {
+        console.log('data coming from the server', response);
+        this.setState({
+          files: response
+        });
+      });
+  }
 
   render() {
     const { user } = this.props;
@@ -250,7 +279,6 @@ class FilePage extends Component {
                         Sign out
                       </button>
                     </div>
-                    <div onClick={this.toggle}>Custom dropdown item</div>
                   </DropdownMenu>
                 </Dropdown>
               </div>
@@ -318,8 +346,18 @@ class FilePage extends Component {
                       <tr key={i}>
                         <td>
                           <span className="glyphicon glyphicon-file" />{' '}
-                          {listValues} {'   '}
-                          <span className="glyphicon glyphicon-star-empty" />
+                          {listValues.filename}{' '}
+                          {listValues.star.toString() == 'false' ? (
+                            <a onClick={this.getStar.bind(this, listValues)}>
+                              {' '}
+                              <span className="glyphicon glyphicon-star-empty" />{' '}
+                            </a>
+                          ) : (
+                            <a onClick={this.getStar.bind(this, listValues)}>
+                              {' '}
+                              <span className="glyphicon glyphicon-star" />{' '}
+                            </a>
+                          )}
                           <button className="btn btn-info pull-right">
                             Share
                           </button>

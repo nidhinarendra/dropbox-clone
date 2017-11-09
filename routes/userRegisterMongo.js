@@ -19,7 +19,10 @@ var UserSchema = new mongoose.Schema({
     {
       filename: String,
       filepath: String,
-      star: Boolean,
+      star: {
+        type: Boolean,
+        default: false
+      },
       sharedWith: [String],
       sharedFrom: [String]
     }
@@ -28,7 +31,10 @@ var UserSchema = new mongoose.Schema({
     {
       foldername: String,
       folderpath: String,
-      star: Boolean,
+      star: {
+        type: Boolean,
+        default: false
+      },
       sharedWith: [String],
       sharedFrom: [String]
     }
