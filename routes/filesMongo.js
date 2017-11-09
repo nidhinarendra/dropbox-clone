@@ -103,3 +103,20 @@ exports.getRecentFiles = function(req, res) {
       });
   });
 };
+
+exports.deleteFile = function(req, res) {
+  console.log(req.body);
+
+  mongo.connect(keys.mongoURI, function() {
+    var coll = mongo.collection('users');
+    console.log('userid received is', req.body.userid);
+    coll.update(
+      { _id: ObjectId(req.body.userid) },
+      {
+        $pull: {
+          files: { filename: req.body.item }
+        }
+      }
+    );
+  });
+};

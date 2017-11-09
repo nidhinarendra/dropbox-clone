@@ -12,6 +12,8 @@ export const userService = {
   uploadFile,
   uploadFolder,
   getFolders,
+  deleteFolder,
+  deleteFile,
   delete: _delete
 };
 const headers = {
@@ -32,6 +34,40 @@ function getFiles(userid) {
         return res.data;
       })
   );
+}
+
+function deleteFolder(user, item) {
+  var payload = { userid: user, item: item };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+  console.log('in services getting files');
+  return fetch('/api/deleteFolder', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
+}
+
+function deleteFile(user, item) {
+  var payload = { userid: user, item: item };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+
+  return fetch('/api/deleteFile', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
 }
 
 function getFolders(userid) {

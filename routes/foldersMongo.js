@@ -65,3 +65,20 @@ exports.getFolders = function(req, res) {
       });
   });
 };
+
+exports.deleteFolder = function(req, res) {
+  console.log(req.body);
+
+  mongo.connect(keys.mongoURI, function() {
+    var coll = mongo.collection('users');
+    console.log('userid received is', req.body.userid);
+    coll.update(
+      { _id: ObjectId(req.body.userid) },
+      {
+        $pull: {
+          folders: { foldername: req.body.item }
+        }
+      }
+    );
+  });
+};

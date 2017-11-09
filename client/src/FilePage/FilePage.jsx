@@ -143,13 +143,38 @@ class FilePage extends Component {
     this.props.dispatch(userActions.getPersonalData(user));
   }
 
-  delete(item) {
+  deleteFolder(item) {
     console.log('the item to delete is', item);
     const newState = this.state.folders;
     if (newState.indexOf(item) > -1) {
       newState.splice(newState.indexOf(item), 1);
       this.setState({ folders: newState });
     }
+    const { userid, folders } = this.state;
+
+    userService.deleteFolder(userid, item).then(response => {
+      console.log('data coming from the server', response);
+      this.setState({
+        folders: response
+      });
+    });
+  }
+
+  deleteFile(item) {
+    console.log('the item to delete is', item);
+    const newState = this.state.files;
+    if (newState.indexOf(item) > -1) {
+      newState.splice(newState.indexOf(item), 1);
+      this.setState({ files: newState });
+    }
+    const { userid, files } = this.state;
+
+    userService.deleteFile(userid, item).then(response => {
+      console.log('data coming from the server', response);
+      this.setState({
+        files: response
+      });
+    });
   }
 
   render() {
@@ -278,7 +303,7 @@ class FilePage extends Component {
                           </button>
                           <button
                             className="btn btn-danger pull-right"
-                            onClick={this.delete.bind(this, listValues)}
+                            onClick={this.deleteFolder.bind(this, listValues)}
                             item={listValues}
                           >
                             Delete
@@ -298,13 +323,17 @@ class FilePage extends Component {
                           <button className="btn btn-info pull-right">
                             Share
                           </button>
-                          <button className="btn btn-danger pull-right">
+                          <button
+                            className="btn btn-danger pull-right"
+                            onClick={this.deleteFile.bind(this, listValues)}
+                            item={listValues}
+                          >
                             Delete
                           </button>
                         </td>
                       </tr>
                     );
-                  })}
+                  }, this)}
                 </tbody>
               </table>
             </div>
