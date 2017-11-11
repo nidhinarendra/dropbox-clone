@@ -89,7 +89,9 @@ app.post('/api/uploadFolder', foldersMongo.uploadFolder);
 app.get('/api/getRecentFiles*', filesMongo.getRecentFiles);
 app.post('/api/deleteFolder', foldersMongo.deleteFolder);
 app.post('/api/deleteFile', filesMongo.deleteFile);
-app.post('/api/updateStar', filesMongo.updateStar);
+app.post('/api/updateStarFile', filesMongo.updateStarFile);
+app.get('/api/starredFolders*', foldersMongo.starredFolders);
+app.get('/api/starredFiles*', filesMongo.starredFiles);
 
 app.post('/api/users/logout', function(req, res) {
   req.session.destroy();

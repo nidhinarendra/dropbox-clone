@@ -13,6 +13,8 @@ import {
   DropdownItem
 } from 'reactstrap';
 
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
 class FilePage extends Component {
   handleFileUpload(event) {
     const { dispatch } = this.props;
@@ -176,7 +178,7 @@ class FilePage extends Component {
       });
     });
   }
-  getStar(item) {
+  getStarFile(item) {
     console.log('starring the item', item);
     console.log('the star status now is ', item.star);
     const newFiles = this.state.files;
@@ -193,7 +195,7 @@ class FilePage extends Component {
     );
     const { userid, files } = this.state;
     userService
-      .updateStar(
+      .updateStarFile(
         userid,
         this.state.files[index].filename,
         this.state.files[index].star
@@ -348,12 +350,16 @@ class FilePage extends Component {
                           <span className="glyphicon glyphicon-file" />{' '}
                           {listValues.filename}{' '}
                           {listValues.star.toString() == 'false' ? (
-                            <a onClick={this.getStar.bind(this, listValues)}>
+                            <a
+                              onClick={this.getStarFile.bind(this, listValues)}
+                            >
                               {' '}
                               <span className="glyphicon glyphicon-star-empty" />{' '}
                             </a>
                           ) : (
-                            <a onClick={this.getStar.bind(this, listValues)}>
+                            <a
+                              onClick={this.getStarFile.bind(this, listValues)}
+                            >
                               {' '}
                               <span className="glyphicon glyphicon-star" />{' '}
                             </a>

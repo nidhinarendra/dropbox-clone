@@ -14,7 +14,9 @@ export const userService = {
   getFolders,
   deleteFolder,
   deleteFile,
-  updateStar,
+  updateStarFile,
+  starredFolders,
+  starredFiles,
   delete: _delete
 };
 const headers = {
@@ -24,6 +26,38 @@ const headers = {
 function getFiles(userid) {
   console.log('in services getting files');
   return fetch('/api/getFiles/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        return res.data;
+      })
+  );
+}
+
+function starredFolders(userid) {
+  console.log('in services getting files');
+  return fetch('/api/starredFolders/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        return res.data;
+      })
+  );
+}
+
+function starredFiles(userid) {
+  console.log('in services getting files');
+  return fetch('/api/starredFiles/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -54,7 +88,7 @@ function deleteFolder(user, item) {
   });
 }
 
-function updateStar(user, file, star) {
+function updateStarFile(user, file, star) {
   var payload = { userid: user, file: file, star: star };
   const requestOptions = {
     method: 'POST',
@@ -62,7 +96,7 @@ function updateStar(user, file, star) {
     body: JSON.stringify(payload)
   };
   console.log('in services getting files');
-  return fetch('/api/updateStar', requestOptions).then(response => {
+  return fetch('/api/updateStarFile', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }

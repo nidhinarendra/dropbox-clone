@@ -28,7 +28,6 @@ exports.uploadFile = function(req, res) {
       filename
     };
 
-    console.log(insertFile);
     mongo.connect(keys.mongoURI, function() {
       var coll = mongo.collection('users');
 
@@ -54,10 +53,7 @@ exports.uploadFile = function(req, res) {
 };
 
 exports.getFiles = function(req, res) {
-  console.log(req.params);
-
   var userid = req.params[0].split('/');
-  console.log(userid[1]);
   mongo.connect(keys.mongoURI, function() {
     var coll = mongo.collection('users');
     var getfiles = coll
@@ -68,19 +64,43 @@ exports.getFiles = function(req, res) {
         var star = user.files.map(a => a.star);
         var files = user.files.map(a => a.filename);
         var result = [];
-        console.log(files.length);
         for (var i = 0; i < files.length; i++) {
           result[i] = { filename: files[i], star: star[i] };
         }
-        console.log(result);
         res.send(result);
       });
   });
 };
 
-exports.getRecentFiles = function(req, res) {
-  console.log(req.params);
+exports.starredFiles = function(req, res) {
+  var userid = req.params[0].split('/');
+  mongo.connect(keys.mongoURI, function() {
+    var coll = mongo.collection('users');
+    var count = 0;
+    console.log('the user idjnlknklmln', userid);
+    var getStar = coll
+      .aggregate(
+        { $match: { _id: ObjectId(userid[1]) } },
+        { $unwind: '$files' },
+        { $match: { 'files.star': true } },
+        {
+          $group: {
+            _id: '$_id',
+            files: { $push: '$files.filename' },
+            numPrimaries: { $sum: 1 }
+          }
+        },
+        { $match: { numPrimaries: { $gt: 1 } } }
+      )
+      .forEach(function(user) {
+        console.log(user.files);
+        res.send(user.files);
+        // res.send(results);
+      });
+  });
+};
 
+exports.getRecentFiles = function(req, res) {
   var userid = req.params[0].split('/');
   mongo.connect(keys.mongoURI, function() {
     var coll = mongo.collection('users');
@@ -100,8 +120,6 @@ exports.getRecentFiles = function(req, res) {
 };
 
 exports.deleteFile = function(req, res) {
-  console.log(req.body);
-
   mongo.connect(keys.mongoURI, function() {
     var coll = mongo.collection('users');
     coll.update(
@@ -115,9 +133,7 @@ exports.deleteFile = function(req, res) {
   });
 };
 
-exports.updateStar = function(req, res) {
-  console.log(req.body);
-
+exports.updateStarFile = function(req, res) {
   mongo.connect(keys.mongoURI, function() {
     var coll = mongo.collection('users');
     coll.update(

@@ -81,6 +81,18 @@ class HomePage extends Component {
         files: response
       });
     });
+
+    userService.starredFolders(user.id).then(response => {
+      this.setState({
+        starFolders: response
+      });
+    });
+
+    userService.starredFiles(user.id).then(response => {
+      this.setState({
+        starFiles: response
+      });
+    });
   }
 
   newFolder() {
@@ -103,7 +115,8 @@ class HomePage extends Component {
       dropdownOpen: false,
       userid: 0,
       files: [],
-      starred: []
+      starFolders: [],
+      starFiles: []
     };
     this.handleFileUpload = this.handleFileUpload.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -195,27 +208,28 @@ class HomePage extends Component {
               <h4>Starred</h4>
               <table className="table table-striped">
                 <tbody>
-                  <tr>
-                    <td>
-                      <span className="glyphicon glyphicon-file" />{' '}
-                      flight_tickets.pdf{' '}
-                      <span className="glyphicon glyphicon-star" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      {' '}
-                      <span className="glyphicon glyphicon-file" />{' '}
-                      exam_dates_timings.docx{' '}
-                      <span className="glyphicon glyphicon-star" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="glyphicon glyphicon-folder-close" />{' '}
-                      Subjects <span className="glyphicon glyphicon-star" />
-                    </td>
-                  </tr>
+                  {this.state.starFolders.map(function(listValues, i) {
+                    return (
+                      <tr key={i}>
+                        <td>
+                          <span className="glyphicon glyphicon-folder-close" />{' '}
+                          {listValues} {'   '}
+                          <span className="glyphicon glyphicon-star" />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {this.state.starFiles.map(function(listValues, i) {
+                    return (
+                      <tr key={i}>
+                        <td>
+                          <span className="glyphicon glyphicon-file" />{' '}
+                          {listValues} {'   '}
+                          <span className="glyphicon glyphicon-star" />
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
