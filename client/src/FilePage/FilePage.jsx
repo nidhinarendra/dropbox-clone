@@ -13,7 +13,16 @@ import {
   DropdownItem
 } from 'reactstrap';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
+};
 
 class FilePage extends Component {
   handleFileUpload(event) {
@@ -163,7 +172,8 @@ class FilePage extends Component {
   }
 
   deleteFile(item) {
-    console.log('the item to delete is', item);
+    console.log('the item to delete is', item, this.state.files.indexOf(item));
+    console.log(this.state.files);
     const newState = this.state.files;
     if (newState.indexOf(item) > -1) {
       newState.splice(newState.indexOf(item), 1);
@@ -204,6 +214,33 @@ class FilePage extends Component {
         console.log('data coming from the server', response);
         this.setState({
           files: response
+        });
+      });
+  }
+
+  getStarFolder(item) {
+    console.log('starring the item', item);
+    console.log('the star status now is ', item.star);
+    const newFolders = this.state.folders;
+    var index = newFolders.indexOf(item);
+    console.log(index);
+    console.log(!this.state.folders[index].star);
+    newFolders[index].star = !this.state.folders[index].star;
+    this.setState({
+      folders: newFolders
+    });
+
+    const { userid, folders } = this.state;
+    userService
+      .updateStarFolder(
+        userid,
+        this.state.folders[index].foldername,
+        this.state.folders[index].star
+      )
+      .then(response => {
+        console.log('data coming from the server', response);
+        this.setState({
+          folders: response
         });
       });
   }
@@ -266,21 +303,14 @@ class FilePage extends Component {
                       </div>
                     </DropdownItem>
                     <Link to="/account">Personal </Link>
-
-                    <br />
-                    <div onClick={this.toggle}>Custom dropdown item</div>
                     <div>
                       <hr />
                     </div>
-                    <div className="col-xs-2 col-md-2">
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={this.handleLogout}
-                      >
-                        Sign out
-                      </button>
+                    <Link to="/activity">Activity </Link>
+                    <div>
+                      <hr />
                     </div>
+                    <a onClick={this.handleLogout}>Logout</a>
                   </DropdownMenu>
                 </Dropdown>
               </div>
@@ -323,11 +353,29 @@ class FilePage extends Component {
                           <span className="glyphicon glyphicon-folder-close" />{' '}
                           <a href="#">
                             {' '}
-                            {listValues} {'   '}{' '}
+                            {listValues.foldername} {'   '}
                           </a>
-                          <a>
-                            <span className="glyphicon glyphicon-star-empty" />
-                          </a>
+                          {listValues.star.toString() == 'false' ? (
+                            <a
+                              onClick={this.getStarFolder.bind(
+                                this,
+                                listValues
+                              )}
+                            >
+                              {' '}
+                              <span className="glyphicon glyphicon-star-empty" />{' '}
+                            </a>
+                          ) : (
+                            <a
+                              onClick={this.getStarFolder.bind(
+                                this,
+                                listValues
+                              )}
+                            >
+                              {' '}
+                              <span className="glyphicon glyphicon-star" />{' '}
+                            </a>
+                          )}
                           <button className="btn btn-info pull-right">
                             Share
                           </button>

@@ -53,6 +53,7 @@ exports.uploadFile = function(req, res) {
 };
 
 exports.getFiles = function(req, res) {
+  console.log(req.params);
   var userid = req.params[0].split('/');
   mongo.connect(keys.mongoURI, function() {
     var coll = mongo.collection('users');
@@ -67,6 +68,7 @@ exports.getFiles = function(req, res) {
         for (var i = 0; i < files.length; i++) {
           result[i] = { filename: files[i], star: star[i] };
         }
+        console.log('The results got by the database are', result);
         res.send(result);
       });
   });
@@ -120,13 +122,15 @@ exports.getRecentFiles = function(req, res) {
 };
 
 exports.deleteFile = function(req, res) {
+  console.log(req.body);
+  console.log(req.body.item.filename);
   mongo.connect(keys.mongoURI, function() {
     var coll = mongo.collection('users');
     coll.update(
       { _id: ObjectId(req.body.userid) },
       {
         $pull: {
-          files: { filename: req.body.item }
+          files: { filename: req.body.item.filename }
         }
       }
     );

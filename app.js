@@ -90,6 +90,7 @@ app.get('/api/getRecentFiles*', filesMongo.getRecentFiles);
 app.post('/api/deleteFolder', foldersMongo.deleteFolder);
 app.post('/api/deleteFile', filesMongo.deleteFile);
 app.post('/api/updateStarFile', filesMongo.updateStarFile);
+app.post('/api/updateStarFolder', foldersMongo.updateStarFolder);
 app.get('/api/starredFolders*', foldersMongo.starredFolders);
 app.get('/api/starredFiles*', filesMongo.starredFiles);
 

@@ -44,7 +44,13 @@ exports.getFolders = function(req, res) {
         _id: ObjectId(userid[1])
       })
       .forEach(function(user) {
-        var result = user.folders.map(a => a.foldername);
+        var star = user.folders.map(a => a.star);
+        var folders = user.folders.map(a => a.foldername);
+        var result = [];
+        for (var i = 0; i < folders.length; i++) {
+          result[i] = { foldername: folders[i], star: star[i] };
+        }
+        console.log(result);
         res.send(result);
       });
   });
@@ -54,13 +60,26 @@ exports.starredFolders = function(req, res) {
   var userid = req.params[0].split('/');
   mongo.connect(keys.mongoURI, function() {
     var coll = mongo.collection('users');
-    var getfolders = coll
-      .find({
-        _id: ObjectId(userid[1])
-      })
+    var count = 0;
+    var getStar = coll
+      .aggregate(
+        { $match: { _id: ObjectId(userid[1]) } },
+        { $unwind: '$folders' },
+        { $match: { 'folders.star': true } },
+        {
+          $group: {
+            _id: '$_id',
+            folders: { $push: '$folders.foldername' },
+            numPrimaries: { $sum: 1 }
+          }
+        },
+        { $match: { numPrimaries: { $gt: 1 } } }
+      )
       .forEach(function(user) {
-        var result = user.folders.map(a => a.foldername);
-        res.send(result);
+        console.log('the length of the array is', user.length);
+        console.log('kjhgjhgvkjhhj', user.folders);
+        res.send(user.folders);
+        // res.send(results);
       });
   });
 };
@@ -73,6 +92,20 @@ exports.deleteFolder = function(req, res) {
       {
         $pull: {
           folders: { foldername: req.body.item }
+        }
+      }
+    );
+  });
+};
+
+exports.updateStarFolder = function(req, res) {
+  mongo.connect(keys.mongoURI, function() {
+    var coll = mongo.collection('users');
+    coll.update(
+      { _id: ObjectId(req.body.userid), 'folders.foldername': req.body.folder },
+      {
+        $set: {
+          'folders.$.star': req.body.star
         }
       }
     );

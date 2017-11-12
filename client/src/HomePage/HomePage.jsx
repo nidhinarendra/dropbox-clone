@@ -34,7 +34,6 @@ class HomePage extends Component {
         userService.getRecentFiles(userid).then(response => {
           console.log('data coming from the server', response);
           this.setState({
-            userid: user.id,
             files: response
           });
         });
@@ -181,22 +180,14 @@ class HomePage extends Component {
                       </div>
                     </DropdownItem>
                     <Link to="/account">Personal </Link>
-
-                    <br />
-                    <div onClick={this.toggle}>Custom dropdown item</div>
                     <div>
                       <hr />
                     </div>
-                    <div className="col-xs-2 col-md-2">
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={this.handleLogout}
-                      >
-                        Sign out
-                      </button>
+                    <Link to="/activity">Activity </Link>
+                    <div>
+                      <hr />
                     </div>
-                    <div onClick={this.toggle}>Custom dropdown item</div>
+                    <a onClick={this.handleLogout}>Logout</a>
                   </DropdownMenu>
                 </Dropdown>
               </div>
@@ -209,15 +200,25 @@ class HomePage extends Component {
               <table className="table table-striped">
                 <tbody>
                   {this.state.starFolders.map(function(listValues, i) {
-                    return (
-                      <tr key={i}>
-                        <td>
-                          <span className="glyphicon glyphicon-folder-close" />{' '}
-                          {listValues} {'   '}
-                          <span className="glyphicon glyphicon-star" />
-                        </td>
-                      </tr>
-                    );
+                    if (!listValues) {
+                      return (
+                        <tr>
+                          <td>
+                            The starred files and folders will appear here{' '}
+                          </td>
+                        </tr>
+                      );
+                    } else {
+                      return (
+                        <tr key={i}>
+                          <td>
+                            <span className="glyphicon glyphicon-folder-close" />{' '}
+                            {listValues} {'   '}
+                            <span className="glyphicon glyphicon-star" />
+                          </td>
+                        </tr>
+                      );
+                    }
                   })}
                   {this.state.starFiles.map(function(listValues, i) {
                     return (

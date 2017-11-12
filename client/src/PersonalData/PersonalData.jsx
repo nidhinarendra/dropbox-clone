@@ -121,22 +121,14 @@ class PersonalData extends Component {
                       </div>
                     </DropdownItem>
                     <Link to="/account">Personal </Link>
-
-                    <br />
-                    <div onClick={this.toggle}>Custom dropdown item</div>
                     <div>
                       <hr />
                     </div>
-                    <div className="col-xs-2 col-md-2">
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={this.handleLogout}
-                      >
-                        Sign out
-                      </button>
+                    <Link to="/activity">Activity </Link>
+                    <div>
+                      <hr />
                     </div>
-                    <div onClick={this.toggle}>Custom dropdown item</div>
+                    <a onClick={this.handleLogout}>Logout</a>
                   </DropdownMenu>
                 </Dropdown>
               </div>
@@ -145,29 +137,20 @@ class PersonalData extends Component {
 
           <div className="col-sm-7">
             <div>
-              <h4>Starred</h4>
+              <h4>Information</h4>
               <table className="table table-striped">
                 <tbody>
                   <tr>
-                    <td>
-                      <span className="glyphicon glyphicon-file" />{' '}
-                      flight_tickets.pdf{' '}
-                      <span className="glyphicon glyphicon-star" />
-                    </td>
+                    <td>First Name</td>
+                    <td>{user.firstName}</td>
                   </tr>
                   <tr>
-                    <td>
-                      {' '}
-                      <span className="glyphicon glyphicon-file" />{' '}
-                      exam_dates_timings.docx{' '}
-                      <span className="glyphicon glyphicon-star" />
-                    </td>
+                    <td>Last Name</td>
+                    <td>{user.lastName}</td>
                   </tr>
                   <tr>
-                    <td>
-                      <span className="glyphicon glyphicon-folder-close" />{' '}
-                      Subjects <span className="glyphicon glyphicon-star" />
-                    </td>
+                    <td>Email</td>
+                    <td>{user.email}</td>
                   </tr>
                 </tbody>
               </table>
