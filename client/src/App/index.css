@@ -85,3 +85,8 @@ h4 {
   font-size: 28px;
   color: #1e90ff;
 }
+
+#modalBody {
+  width: 300px;
+  length: 300px;
+}

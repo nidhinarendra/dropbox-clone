@@ -13,6 +13,8 @@ import {
   DropdownItem
 } from 'reactstrap';
 
+import { Button, Modal } from 'react-bootstrap';
+
 class FilePage extends Component {
   handleFileUpload(event) {
     const { dispatch } = this.props;
@@ -63,13 +65,43 @@ class FilePage extends Component {
       files: [],
       folders: [],
       inputs: [],
-      folderName: ''
+      folderName: '',
+      showModal: false,
+      fileNameToShare: '',
+      folderNameToShare: ''
     };
     this.handleFileUpload = this.handleFileUpload.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleFolderChange = this.handleFolderChange.bind(this);
     this.handleFolderSubmit = this.handleFolderSubmit.bind(this);
+    this.openFile = this.openFile.bind(this);
+    this.openFolder = this.openFolder.bind(this);
+    this.close = this.close.bind(this);
+  }
+
+  close() {
+    this.setState({
+      showModal: false,
+      fileNameToShare: '',
+      folderNameToShare: ''
+    });
+  }
+
+  openFile(item) {
+    console.log(item);
+    this.setState({
+      showModal: true,
+      fileNameToShare: item.filename
+    });
+  }
+
+  openFolder(item) {
+    console.log(item);
+    this.setState({
+      showModal: true,
+      folderNameToShare: item.foldername
+    });
   }
 
   handleHome() {
@@ -365,9 +397,12 @@ class FilePage extends Component {
                               <span className="glyphicon glyphicon-star" />{' '}
                             </a>
                           )}
-                          <button className="btn btn-info pull-right">
+                          <Button
+                            className="btn btn-info pull-right"
+                            onClick={this.openFolder.bind(this, listValues)}
+                          >
                             Share
-                          </button>
+                          </Button>
                           <button
                             className="btn btn-danger pull-right"
                             onClick={this.deleteFolder.bind(this, listValues)}
@@ -401,9 +436,12 @@ class FilePage extends Component {
                               <span className="glyphicon glyphicon-star" />{' '}
                             </a>
                           )}
-                          <button className="btn btn-info pull-right">
+                          <Button
+                            className="btn btn-info pull-right"
+                            onClick={this.openFile.bind(this, listValues)}
+                          >
                             Share
-                          </button>
+                          </Button>
                           <button
                             className="btn btn-danger pull-right"
                             onClick={this.deleteFile.bind(this, listValues)}
@@ -446,6 +484,26 @@ class FilePage extends Component {
             </ul>
           </div>
         </div>
+        <Modal
+          className="modal-background fade out"
+          show={this.state.showModal}
+          onHide={this.close}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {this.state.fileNameToShare}
+              {this.state.folderNameToShare}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Email ID or Name to share with <br />
+            <input id="modalBody" />
+          </Modal.Body>
+          <Modal.Footer>
+            <button onClick={this.close}>Share</button>
+            <button onClick={this.close}>Close</button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }

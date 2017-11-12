@@ -150,7 +150,23 @@ class PersonalData extends Component {
                   </tr>
                   <tr>
                     <td>Email</td>
-                    <td>{user.email}</td>
+                    <td>nidhi@gmail.com</td>
+                  </tr>
+                  <tr>
+                    <td>Overview</td>
+                    <td>A very active cheerful girl who loves adventures</td>
+                  </tr>
+                  <tr>
+                    <td>Work</td>
+                    <td>Intel Corporation</td>
+                  </tr>
+                  <tr>
+                    <td>Interests</td>
+                    <td>Listening to music, playing basketball</td>
+                  </tr>
+                  <tr>
+                    <td>Favorite books</td>
+                    <td>Kane and able, The monk who sold his ferrari</td>
                   </tr>
                 </tbody>
               </table>
