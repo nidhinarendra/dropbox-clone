@@ -38,9 +38,7 @@ typings
 # Optional REPL history
 .node_repl_history
 /.metadata/
-<<<<<<< HEAD
+
 
 #passwords
 config
-=======
->>>>>>> e3bac42fb8f0feecf7d4f06a7ad617d79edc436e
