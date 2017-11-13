@@ -17,8 +17,6 @@ var upload = multer({ storage: storage }).single('myfile');
 
 exports.uploadFile = function(req, res) {
   upload(req, res, function(err) {
-    console.log(req.file.originalname);
-    console.log(req.body.user);
     var userid = req.body.user;
     var filepath = req.file.path;
     var filename = req.file.originalname;
@@ -56,10 +54,8 @@ exports.getFiles = function(req, res) {
     } else {
       var resultFiles = [];
       for (var i = 0; i < result.length; i += 1) {
-        console.log(result[i].filename);
         resultFiles.push(result[i]);
       }
-      console.log('the result file is', resultFiles);
       res.send(resultFiles);
     }
   }, userid[1]);

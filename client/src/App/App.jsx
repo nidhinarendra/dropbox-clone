@@ -9,7 +9,9 @@ import { alertActions } from '../_actions';
 import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
+import { FilePage } from '../FilePage';
 import { RegisterPage } from '../RegisterPage';
+import { PersonalData } from '../PersonalData';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,7 +23,6 @@ class App extends React.Component {
       dispatch(alertActions.clear());
     });
   }
-
 
   render() {
     const { alert } = this.props;
@@ -35,6 +36,8 @@ class App extends React.Component {
           <div>
             <PrivateRoute exact path="/" component={HomePage} />
             <PrivateRoute exact path="/home" component={HomePage} />
+            <PrivateRoute exact path="/files" component={FilePage} />
+            <PrivateRoute exact path="/account" component={PersonalData} />
             <Route path="/register" component={RegisterPage} />
             <Route path="/login" component={LoginPage} />
           </div>

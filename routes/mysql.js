@@ -10,7 +10,6 @@ var pool = mysql.createPool({
 
 // fetching the data from the sql server
 exports.fetchData = function(callback, sqlQuery) {
-  console.log('\nSQL Query::' + sqlQuery);
   pool.getConnection(function(err, connection) {
     if (err) {
       console.log('ERROR: ' + err.message);
@@ -22,26 +21,21 @@ exports.fetchData = function(callback, sqlQuery) {
           console.log('ERROR: ' + err.message);
         } else {
           // return err or result
-          console.log('DB Results:' + rows);
           callback(err, rows);
         }
         connection.release();
       });
     }
   });
-
   console.log('\nConnection closed..');
 };
 
 exports.getFile = function(callback, userid) {
-  console.log('\nSQL Query::' + userid);
-
   pool.getConnection(function(err, connection) {
     if (err) {
       console.log('ERROR: ' + err.message);
     } else {
       // Use the connection
-      console.log('Getting files from db');
       var fileDetails = connection.query(
         'SELECT fileid, filename FROM files WHERE userid = ?',
         userid,
@@ -50,7 +44,6 @@ exports.getFile = function(callback, userid) {
             console.log('ERROR: ' + err.message);
           } else {
             // return err or result
-            console.log('DB Results in Mysql: ' + JSON.stringify(rows));
             callback(err, rows);
           }
           connection.release();
@@ -62,14 +55,11 @@ exports.getFile = function(callback, userid) {
 };
 
 exports.insertFile = function(callback, sqlQuery) {
-  console.log('\nSQL Query::' + sqlQuery);
-
   pool.getConnection(function(err, connection) {
     if (err) {
       console.log('ERROR: ' + err.message);
     } else {
       // Use the connection
-      console.log('Inserting into db');
       var userdetails = connection.query(
         'INSERT INTO files SET ?',
         sqlQuery,
@@ -90,16 +80,11 @@ exports.insertFile = function(callback, sqlQuery) {
 };
 
 exports.insertData = function(callback, sqlQuery) {
-  console.log('\nSQL Query::' + sqlQuery);
-  console.log(
-    sqlQuery.firstname + ' ' + sqlQuery.lastname + ' ' + sqlQuery.emailid
-  );
   pool.getConnection(function(err, connection) {
     if (err) {
       console.log('ERROR: ' + err.message);
     } else {
       // Use the connection
-      console.log('Inserting into db');
       var userdetails = connection.query(
         'INSERT INTO users SET ?',
         sqlQuery,
@@ -108,7 +93,6 @@ exports.insertData = function(callback, sqlQuery) {
             console.log('ERROR: ' + err.message);
           } else {
             // return err or result
-            console.log('DB Results in Mysql: ' + JSON.stringify(rows));
             callback(err, rows);
           }
           connection.release();
@@ -121,7 +105,6 @@ exports.insertData = function(callback, sqlQuery) {
 };
 
 exports.updateData = function(callback, sqlQuery) {
-  console.log('\nSQL Query::' + sqlQuery);
   pool.getConnection(function(err, connection) {
     if (err) {
       console.log('ERROR: ' + err.message);
@@ -133,7 +116,6 @@ exports.updateData = function(callback, sqlQuery) {
           console.log('ERROR: ' + err.message);
         } else {
           // return err or result
-          console.log('DB Results:' + rows);
           callback(err, rows);
         }
         connection.release();

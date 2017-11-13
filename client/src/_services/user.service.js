@@ -8,31 +8,156 @@ export const userService = {
   getById,
   update,
   getFiles,
+  getRecentFiles,
   uploadFile,
+  uploadFolder,
+  getFolders,
+  deleteFolder,
+  deleteFile,
+  updateStarFile,
+  updateStarFolder,
+  starredFolders,
+  starredFiles,
   delete: _delete
 };
-
-/*
-function getFiles(userid) {
-  console.log('in services getting files');
-  fetch('/api/getFiles/' + userid).then(response => {
-    // console.log(response.json());
-    if (!response.ok) {
-      console.log('the response is not ok in error');
-      return Promise.reject(response.statusText);
-    } else {
-      var temp = response.json();
-      console.log('the keys in temp is', Object.keys(temp), response);
-
-      return temp;
-    }
-  });
-}
-*/
+const headers = {
+  Accept: 'application/json'
+};
 
 function getFiles(userid) {
   console.log('in services getting files');
   return fetch('/api/getFiles/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        return res.data;
+      })
+  );
+}
+
+function starredFolders(userid) {
+  console.log('in services getting files');
+  return fetch('/api/starredFolders/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        return res.data;
+      })
+  );
+}
+
+function starredFiles(userid) {
+  console.log('in services getting files');
+  return fetch('/api/starredFiles/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        return res.data;
+      })
+  );
+}
+
+function deleteFolder(user, item) {
+  var payload = { userid: user, item: item };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+  console.log('in services getting files');
+  return fetch('/api/deleteFolder', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
+}
+
+function updateStarFile(user, file, star) {
+  var payload = { userid: user, file: file, star: star };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+  console.log('in services getting files');
+  return fetch('/api/updateStarFile', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
+}
+
+function updateStarFolder(user, folder, star) {
+  var payload = { userid: user, folder: folder, star: star };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+  return fetch('/api/updateStarFolder', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
+}
+
+function deleteFile(user, item) {
+  var payload = { userid: user, item: item };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+
+  return fetch('/api/deleteFile', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
+}
+
+function getFolders(userid) {
+  console.log('in services getting folders');
+  return fetch('/api/getFolders/' + userid).then(response =>
+    response
+      .json()
+      .then(data => ({
+        data: data,
+        status: response.status
+      }))
+      .then(res => {
+        console.log(res.status, res.data);
+        return res.data;
+      })
+  );
+}
+
+function getRecentFiles(userid) {
+  console.log('in services getting files');
+  return fetch('/api/getRecentFiles/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -60,10 +185,30 @@ function uploadFile(payload) {
   });
 }
 
-function login(email, password) {
+function uploadFolder(payload) {
+  console.log('the payload in user services for folder upload is', payload);
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  };
+  return fetch('/api/uploadFolder', requestOptions).then(response => {
+    if (!response.ok) {
+      return Promise.reject(response.statusText);
+    }
+    console.log('response' + response);
+    return response.status;
+  });
+}
+
+function login(email, password) {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
     body: JSON.stringify({ email, password })
   };
 
@@ -76,7 +221,6 @@ function login(email, password) {
       return response.json();
     })
     .then(user => {
-      alert(JSON.stringify(user, null, 4));
       if (user && user.id) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
@@ -86,8 +230,17 @@ function login(email, password) {
 }
 
 function logout() {
+  return fetch('/api/users/logout', {
+    method: 'POST',
+    headers: {
+      ...headers
+    },
+    credentials: 'include'
+  }).then(res => {
+    localStorage.removeItem('user');
+    return res.status;
+  });
   // remove user from local storage to log user out
-  localStorage.removeItem('user');
 }
 
 function getAll() {
@@ -119,9 +272,7 @@ function register(user) {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
-
     return response.json();
-    // console.log(response.json());
   });
 }
 

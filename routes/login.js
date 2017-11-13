@@ -19,7 +19,6 @@ exports.checkLogin = function(req, res) {
   log.info(getUser);
 
   mysql.fetchData(function(err, results) {
-    console.log('DB Results:' + results);
     if (err) {
       throw err;
     } else {
@@ -139,7 +138,6 @@ exports.logout = function(req, res) {
     "' where user_id=" +
     req.session.id;
   mysql.updateData(function(err, results) {
-    console.log('DB Results:' + results);
     if (err) {
       throw err;
     }

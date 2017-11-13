@@ -19,11 +19,9 @@ function login(email, password) {
     userService.login(email, password).then(
       user => {
         if (user.statusCode == 401) {
-          console.log('erroorrr!!!!!!!!!!!!!!');
           dispatch(alertActions.error('error'));
           history.push('/login');
         } else if (user.statusCode == 200) {
-          console.log('checked the status code');
           dispatch(success(user));
           history.push('/home');
         }
@@ -47,7 +45,11 @@ function login(email, password) {
 }
 
 function logout() {
-  userService.logout();
+  userService.logout().then(res => {
+    if (res == 200) {
+      history.push('/login');
+    }
+  });
   return { type: userConstants.LOGOUT };
 }
 
@@ -93,13 +95,38 @@ function getFiles(user) {
     );
   };
   function request(user) {
-    return { type: userConstants.REGISTER_REQUEST, user };
+    return { type: userConstants.GET_FILE_REQUEST, user };
   }
   function success(user) {
-    return { type: userConstants.REGISTER_SUCCESS, user };
+    return { type: userConstants.GET_FILE_SUCCESS, user };
   }
   function failure(error) {
-    return { type: userConstants.REGISTER_FAILURE, error };
+    return { type: userConstants.GET_FILE_FAILURE, error };
+  }
+}
+
+function getPersonalData(user) {
+  return dispatch => {
+    dispatch(request(user));
+    userService.getPersonalData(user).then(
+      user => {
+        console.log('inside getfiles actions response' + user);
+        dispatch(success());
+      },
+      error => {
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+  function request(user) {
+    return { type: userConstants.GET_FILE_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.GET_FILE_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.GET_FILE_FAILURE, error };
   }
 }
 
