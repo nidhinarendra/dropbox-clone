@@ -26,7 +26,7 @@ const headers = {
 
 function getFiles(userid) {
   console.log('in services getting files');
-  return fetch('/api/getFiles/' + userid).then(response =>
+  return fetch('/api/users/getFiles/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -42,7 +42,7 @@ function getFiles(userid) {
 
 function starredFolders(userid) {
   console.log('in services getting files');
-  return fetch('/api/starredFolders/' + userid).then(response =>
+  return fetch('/api/users/starredFolders/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -58,7 +58,7 @@ function starredFolders(userid) {
 
 function starredFiles(userid) {
   console.log('in services getting files');
-  return fetch('/api/starredFiles/' + userid).then(response =>
+  return fetch('/api/users/starredFiles/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -80,7 +80,7 @@ function deleteFolder(user, item) {
     body: JSON.stringify(payload)
   };
   console.log('in services getting files');
-  return fetch('/api/deleteFolder', requestOptions).then(response => {
+  return fetch('/api/users/deleteFolder', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
@@ -97,7 +97,7 @@ function updateStarFile(user, file, star) {
     body: JSON.stringify(payload)
   };
   console.log('in services getting files');
-  return fetch('/api/updateStarFile', requestOptions).then(response => {
+  return fetch('/api/users/updateStarFile', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
@@ -113,7 +113,7 @@ function updateStarFolder(user, folder, star) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   };
-  return fetch('/api/updateStarFolder', requestOptions).then(response => {
+  return fetch('/api/users/updateStarFolder', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
@@ -130,7 +130,7 @@ function deleteFile(user, item) {
     body: JSON.stringify(payload)
   };
 
-  return fetch('/api/deleteFile', requestOptions).then(response => {
+  return fetch('/api/users/deleteFile', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
@@ -141,7 +141,7 @@ function deleteFile(user, item) {
 
 function getFolders(userid) {
   console.log('in services getting folders');
-  return fetch('/api/getFolders/' + userid).then(response =>
+  return fetch('/api/users/getFolders/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -157,7 +157,7 @@ function getFolders(userid) {
 
 function getRecentFiles(userid) {
   console.log('in services getting files');
-  return fetch('/api/getRecentFiles/' + userid).then(response =>
+  return fetch('/api/users/getRecentFiles/' + userid).then(response =>
     response
       .json()
       .then(data => ({
@@ -176,7 +176,7 @@ function uploadFile(payload) {
     method: 'POST',
     body: payload
   };
-  return fetch('/api/uploadFile', requestOptions).then(response => {
+  return fetch('/api/users/uploadFile', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
@@ -192,7 +192,7 @@ function uploadFolder(payload) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   };
-  return fetch('/api/uploadFolder', requestOptions).then(response => {
+  return fetch('/api/users/uploadFolder', requestOptions).then(response => {
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
@@ -222,6 +222,8 @@ function login(email, password) {
     })
     .then(user => {
       if (user && user.id) {
+        console.log(user.id);
+        console.log(user);
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
       }
@@ -269,10 +271,12 @@ function register(user) {
   };
 
   return fetch('/api/users/register', requestOptions).then(response => {
+    console.log('the response for registration is ');
+    console.log(response);
     if (!response.ok) {
       return Promise.reject(response.statusText);
     }
-    return response.json();
+    return response;
   });
 }
 

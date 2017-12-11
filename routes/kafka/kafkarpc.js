@@ -74,6 +74,11 @@ KafkaRPC.prototype.makeRequest = function(topic_name, content, callback) {
 };
 
 KafkaRPC.prototype.setupResponseQueue = function(producer, topic_name, next) {
+  console.log(
+    'The topic name initially passed to setupResponseQueue is',
+    topic_name
+  );
+
   //don't mess around if we have a queue
   if (this.response_queue) return next();
 

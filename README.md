@@ -1,20 +1,18 @@
-When the project is cloned into the local system, run the following commands in the main directory
-> npm install
+When the project is cloned into the local system, get into the springbootServer directory and type the following command to start the server
+> cd springbootServer
+> mvn spring-boot:run
 
-Now get into the clients directory and repeate the same step
-> cd clients
->npm install
 
-Now get into kafkabackend and perform the same step.
+
+Now execute the following commands to start the client
 > cd ..
-> cd kafka-back-end
->npm install
+> cd client
+> npm install
+> npm start
 
-The application is now ready to run. The package.json has facility to start all the files together with just one command.
-> npm run dev
 
-This will start the backend, frontend, run the kafka script and start the kafka-back-end simultaneously.
-The server is running on the port 3000 and the client is running on the port 8080. The dropbox application should be automattically opened if the installations are successful.
+The application is now ready to run.
+The server is running on the port 3000 and the client is running on the port 8080. The dropbox application should be automatically opened if the installations are successful.
 
 
 

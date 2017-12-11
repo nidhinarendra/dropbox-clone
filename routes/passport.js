@@ -14,6 +14,7 @@ module.exports = function(passport) {
         session: true
       },
       function(username, password, done) {
+        console.log('Entering the authentication function, before kafka');
         kafka.make_request(
           'login',
           { username: username, password: password },

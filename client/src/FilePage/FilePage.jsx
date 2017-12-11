@@ -209,21 +209,19 @@ class FilePage extends Component {
       });
     });
   }
+
   getStarFile(item) {
     console.log('starring the item', item);
     console.log('the star status now is ', item.star);
     const newFiles = this.state.files;
     var index = newFiles.indexOf(item);
-    console.log(index);
-    console.log(!this.state.files[index].star);
+    // console.log(index);
+    // console.log(!this.state.files[index].star);
     newFiles[index].star = !this.state.files[index].star;
     this.setState({
       files: newFiles
     });
-    console.log(
-      typeof !this.state.files[index].star,
-      this.state.files[index].star
-    );
+    console.log(typeof !this.state.files[index].star, this.state.files);
     const { userid, files } = this.state;
     userService
       .updateStarFile(
@@ -234,7 +232,7 @@ class FilePage extends Component {
       .then(response => {
         console.log('data coming from the server', response);
         this.setState({
-          files: response
+          files: newFiles
         });
       });
   }
@@ -259,9 +257,8 @@ class FilePage extends Component {
         this.state.folders[index].star
       )
       .then(response => {
-        console.log('data coming from the server', response);
         this.setState({
-          folders: response
+          folders: newFolders
         });
       });
   }
@@ -376,7 +373,7 @@ class FilePage extends Component {
                             {' '}
                             {listValues.foldername} {'   '}
                           </a>
-                          {listValues.star.toString() == 'false' ? (
+                          {listValues.star == false ? (
                             <a
                               onClick={this.getStarFolder.bind(
                                 this,
@@ -421,7 +418,7 @@ class FilePage extends Component {
                         <td>
                           <span className="glyphicon glyphicon-file" />{' '}
                           {listValues.filename}{' '}
-                          {listValues.star.toString() == 'false' ? (
+                          {listValues.star == false ? (
                             <a
                               onClick={this.getStarFile.bind(this, listValues)}
                             >
