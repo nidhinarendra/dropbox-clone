@@ -2,6 +2,7 @@ var passport = require('passport');
 require('./passport')(passport);
 
 exports.authenticate = function(req, res) {
+  console.log(req);
   passport.authenticate('login', function(err, user) {
     if (err) {
       res.status(500).send();

@@ -11,7 +11,7 @@ consumer.on('message', function(message) {
   console.log(JSON.stringify(message.value));
   var data = JSON.parse(message.value);
   login.handle_login(data.data, function(err, res) {
-    console.log('after handle' + res);
+    console.log('after handle', res);
     var payloads = [
       {
         topic: data.replyTo,

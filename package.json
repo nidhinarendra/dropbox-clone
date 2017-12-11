@@ -8,7 +8,8 @@
     "server": "nodemon app.js",
     "client": "npm start --prefix client",
     "kafka": "npm start --prefix kafka-back-end",
-    "dev": "concurrently \"npm run kafka\" \"npm run server\" \"npm run client\""
+    "dev":
+      "concurrently \"npm run kafka\" \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "babel": "^6.23.0",

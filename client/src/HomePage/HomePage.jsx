@@ -209,27 +209,31 @@ class HomePage extends Component {
                         </tr>
                       );
                     } else {
+                      if (listValues.star == true) {
+                        return (
+                          <tr key={i}>
+                            <td>
+                              <span className="glyphicon glyphicon-folder-close" />{' '}
+                              {listValues.foldername} {'   '}
+                              <span className="glyphicon glyphicon-star" />
+                            </td>
+                          </tr>
+                        );
+                      }
+                    }
+                  })}
+                  {this.state.starFiles.map(function(listValues, i) {
+                    if (listValues.star == true) {
                       return (
                         <tr key={i}>
                           <td>
-                            <span className="glyphicon glyphicon-folder-close" />{' '}
-                            {listValues} {'   '}
+                            <span className="glyphicon glyphicon-file" />{' '}
+                            {listValues.filename} {'   '}
                             <span className="glyphicon glyphicon-star" />
                           </td>
                         </tr>
                       );
                     }
-                  })}
-                  {this.state.starFiles.map(function(listValues, i) {
-                    return (
-                      <tr key={i}>
-                        <td>
-                          <span className="glyphicon glyphicon-file" />{' '}
-                          {listValues} {'   '}
-                          <span className="glyphicon glyphicon-star" />
-                        </td>
-                      </tr>
-                    );
                   })}
                 </tbody>
               </table>
@@ -239,15 +243,27 @@ class HomePage extends Component {
               <table className="table table-striped">
                 <tbody>
                   {this.state.files.map(function(listValues, i) {
-                    return (
-                      <tr key={i}>
-                        <td>
-                          <span className="glyphicon glyphicon-file" />{' '}
-                          {listValues} {'   '}
-                          <span className="glyphicon glyphicon-star-empty" />
-                        </td>
-                      </tr>
-                    );
+                    if (listValues.star == false) {
+                      return (
+                        <tr key={i}>
+                          <td>
+                            <span className="glyphicon glyphicon-file" />{' '}
+                            {listValues.filename} {'   '}
+                            <span className="glyphicon glyphicon-star-empty" />
+                          </td>
+                        </tr>
+                      );
+                    } else {
+                      return (
+                        <tr key={i}>
+                          <td>
+                            <span className="glyphicon glyphicon-file" />{' '}
+                            {listValues.filename} {'   '}
+                            <span className="glyphicon glyphicon-star" />
+                          </td>
+                        </tr>
+                      );
+                    }
                   })}
                 </tbody>
               </table>
